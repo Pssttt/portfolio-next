@@ -1,26 +1,97 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Hack";
+  src: url("/fonts/hack-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Hack";
+  src: url("/fonts/hack-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: block;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --radius: 0;
+  /* Catppuccin Mocha Base Colors */
+  --background: #1e1e2e; /* base */
+  --foreground: #cdd6f4; /* text */
+  --card: #181825; /* mantle */
+  --card-foreground: #cdd6f4; /* text */
+  --popover: #181825; /* mantle */
+  --popover-foreground: #cdd6f4; /* text */
+  --primary: #89b4fa; /* blue */
+  --primary-foreground: #1e1e2e; /* base */
+  --secondary: #313244; /* surface0 */
+  --secondary-foreground: #cdd6f4; /* text */
+  --muted: #313244; /* surface0 */
+  --muted-foreground: #a6adc8; /* subtext0 */
+  --accent: #89dceb; /* sky */
+  --accent-foreground: #1e1e2e; /* base */
+  --destructive: #f38ba8; /* red */
+  --border: #45475a; /* surface1 */
+  --input: #45475a; /* surface1 */
+  --ring: #89b4fa; /* blue */
+  --chart-1: #fab387; /* peach */
+  --chart-2: #94e2d5; /* teal */
+  --chart-3: #89b4fa; /* blue */
+  --chart-4: #cba6f7; /* mauve */
+  --chart-5: #f38ba8; /* red */
+  --sidebar: #1e1e2e; /* base */
+  --sidebar-foreground: #cdd6f4; /* text */
+  --sidebar-primary: #89b4fa; /* blue */
+  --sidebar-primary-foreground: #1e1e2e; /* base */
+  --sidebar-accent: #313244; /* surface0 */
+  --sidebar-accent-foreground: #cdd6f4; /* text */
+  --sidebar-border: #45475a; /* surface1 */
+  --sidebar-ring: #89b4fa; /* blue */
 }
 
 @theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Hack", monospace;
 }
