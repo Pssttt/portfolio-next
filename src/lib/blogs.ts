@@ -10,35 +10,11 @@ export interface BlogPostMetadata {
   ogImage?: string;
 }
 
-export interface BlogPost extends BlogPostMetadata {
-  content: string;
-}
+const blogsDir = path.join(process.cwd(), "src/app/(main)/blogs/[slug]");
 
-const blogsDir = path.join(process.cwd(), "public/blogs");
-
-export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+export async function getAllBlogPosts(): Promise<BlogPostMetadata[]> {
   try {
-    const filePath = path.join(blogsDir, `${slug}.md`);
-    const fileContent = fs.readFileSync(filePath, "utf-8");
-    const { data, content } = matter(fileContent);
-
-    return {
-      slug,
-      title: data.title,
-      date: data.date,
-      excerpt: data.excerpt,
-      ogImage: data.ogImage,
-      content,
-    };
-  } catch (error) {
-    console.error(`Error loading blog post ${slug}:`, error);
-    return null;
-  }
-}
-
-export function getAllBlogPosts(): BlogPostMetadata[] {
-  try {
-    const files = fs.readdirSync(blogsDir).filter((f) => f.endsWith(".md"));
+    const files = fs.readdirSync(blogsDir).filter((f) => f.endsWith(".mdx"));
 
     return files
       .map((file) => {
@@ -47,10 +23,10 @@ export function getAllBlogPosts(): BlogPostMetadata[] {
         const { data } = matter(fileContent);
 
         return {
-          slug: file.replace(".md", ""),
-          title: data.title,
-          date: data.date,
-          excerpt: data.excerpt,
+          slug: file.replace(".mdx", ""),
+          title: data.title || "",
+          date: data.date || "",
+          excerpt: data.excerpt || "",
           ogImage: data.ogImage,
         };
       })
@@ -61,27 +37,15 @@ export function getAllBlogPosts(): BlogPostMetadata[] {
   }
 }
 
-export function getAdjacentPosts(
-  currentSlug: string
-): { prev: string | null; next: string | null } {
-  const posts = getAllBlogPosts();
+export async function getAdjacentPostsData(currentSlug: string): Promise<{
+  prev: BlogPostMetadata | null;
+  next: BlogPostMetadata | null;
+}> {
+  const posts = await getAllBlogPosts();
   const currentIndex = posts.findIndex((post) => post.slug === currentSlug);
 
   return {
-    prev:
-      currentIndex < posts.length - 1 ? posts[currentIndex + 1].slug : null,
-    next: currentIndex > 0 ? posts[currentIndex - 1].slug : null,
-  };
-}
-
-export function getAdjacentPostsData(
-  currentSlug: string
-): { prev: BlogPostMetadata | null; next: BlogPostMetadata | null } {
-  const { prev, next } = getAdjacentPosts(currentSlug);
-  const posts = getAllBlogPosts();
-
-  return {
-    prev: prev ? posts.find((p) => p.slug === prev) || null : null,
-    next: next ? posts.find((p) => p.slug === next) || null : null,
+    prev: currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null,
+    next: currentIndex > 0 ? posts[currentIndex - 1] : null,
   };
 }
