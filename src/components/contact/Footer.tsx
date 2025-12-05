@@ -65,9 +65,9 @@ export function Footer() {
         {/* System Info */}
         <div className="flex-1 space-y-1 font-mono text-sm">
           {systemInfo.map((info, i) => (
-            <div key={i} className="flex gap-2">
-              <span className="text-cat-red w-24">{info.label}</span>
-              <span className="text-muted-foreground">~</span>
+            <div key={i} className="flex gap-1">
+              <span className="text-cat-red w-20 sm:w-24 flex-shrink-0">{info.label}</span>
+              <span className="text-muted-foreground flex-shrink-0">~</span>
               {info.link ? (
                 <a
                   href={info.link}
@@ -77,12 +77,12 @@ export function Footer() {
                       ? "noopener noreferrer"
                       : undefined
                   }
-                  className={`${info.color} hover:underline transition-colors`}
+                  className={`${info.color} hover:underline transition-colors break-words`}
                 >
                   {info.value}
                 </a>
               ) : (
-                <span className={info.color}>{info.value}</span>
+                <span className={`${info.color} break-words`}>{info.value}</span>
               )}
             </div>
           ))}
