@@ -49,7 +49,8 @@ export function Navigation() {
   const currentItem = navItems.find(
     (item) =>
       pathname === item.path ||
-      (item.path === "/blogs" && pathname.startsWith("/blogs/"))
+      (item.path === "/blogs" && pathname.startsWith("/blogs/")) ||
+      (item.path === "/projects" && pathname.startsWith("/projects/"))
   );
 
   return (
@@ -83,7 +84,8 @@ export function Navigation() {
             {navItems.map((item) => {
               const isActive =
                 pathname === item.path ||
-                (item.path === "/blogs" && pathname.startsWith("/blogs/"));
+                (item.path === "/blogs" && pathname.startsWith("/blogs/")) ||
+                (item.path === "/projects" && pathname.startsWith("/projects/"));
               return (
                 <Link
                   key={item.path}
@@ -115,7 +117,8 @@ export function Navigation() {
         {navItems.map((item) => {
           const isActive =
             pathname === item.path ||
-            (item.path === "/blogs" && pathname.startsWith("/blogs/"));
+            (item.path === "/blogs" && pathname.startsWith("/blogs/")) ||
+            (item.path === "/projects" && pathname.startsWith("/projects/"));
           return (
             <Link
               key={item.path}
