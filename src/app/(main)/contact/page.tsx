@@ -2,7 +2,7 @@ import { Footer } from "@/components/contact/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact - Pyae Sone Shin Thant",
   description:
     "Get in touch with Pyae Sone Shin Thant. Available for collaborations, job opportunities, and technical discussions. Find me on GitHub, LinkedIn, and email.",
   authors: [{ name: "Pyae Sone Shin Thant" }],
