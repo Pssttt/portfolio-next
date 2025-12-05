@@ -1,39 +1,153 @@
 @import "tailwindcss";
 
-:root {
-  --radius: 0;
-  /* Catppuccin Mocha Base Colors */
-  --background: #1e1e2e; /* base */
-  --foreground: #cdd6f4; /* text */
-  --card: #181825; /* mantle */
-  --card-foreground: #cdd6f4; /* text */
-  --popover: #181825; /* mantle */
-  --popover-foreground: #cdd6f4; /* text */
-  --primary: #89b4fa; /* blue */
-  --primary-foreground: #1e1e2e; /* base */
-  --secondary: #313244; /* surface0 */
-  --secondary-foreground: #cdd6f4; /* text */
-  --muted: #313244; /* surface0 */
-  --muted-foreground: #a6adc8; /* subtext0 */
-  --accent: #89dceb; /* sky */
-  --accent-foreground: #1e1e2e; /* base */
-  --destructive: #f38ba8; /* red */
-  --border: #45475a; /* surface1 */
-  --input: #45475a; /* surface1 */
-  --ring: #89b4fa; /* blue */
-  --chart-1: #fab387; /* peach */
-  --chart-2: #94e2d5; /* teal */
-  --chart-3: #89b4fa; /* blue */
-  --chart-4: #cba6f7; /* mauve */
-  --chart-5: #f38ba8; /* red */
-  --sidebar: #1e1e2e; /* base */
-  --sidebar-foreground: #cdd6f4; /* text */
-  --sidebar-primary: #89b4fa; /* blue */
-  --sidebar-primary-foreground: #1e1e2e; /* base */
-  --sidebar-accent: #313244; /* surface0 */
-  --sidebar-accent-foreground: #cdd6f4; /* text */
-  --sidebar-border: #45475a; /* surface1 */
-  --sidebar-ring: #89b4fa; /* blue */
+@layer base {
+  :root {
+    --radius: 0;
+    /* Catppuccin Mocha Base Colors - Dark Default */
+    --background: #1e1e2e; /* base */
+    --foreground: #cdd6f4; /* text */
+    --card: #181825; /* mantle */
+    --card-foreground: #cdd6f4; /* text */
+    --popover: #181825; /* mantle */
+    --popover-foreground: #cdd6f4; /* text */
+    --primary: #89b4fa; /* blue */
+    --primary-foreground: #1e1e2e; /* base */
+    --secondary: #313244; /* surface0 */
+    --secondary-foreground: #cdd6f4; /* text */
+    --muted: #313244; /* surface0 */
+    --muted-foreground: #a6adc8; /* subtext0 */
+    --accent: #89dceb; /* sky */
+    --accent-foreground: #1e1e2e; /* base */
+    --destructive: #f38ba8; /* red */
+    --border: #45475a; /* surface1 */
+    --input: #45475a; /* surface1 */
+    --ring: #89b4fa; /* blue */
+    --chart-1: #fab387; /* peach */
+    --chart-2: #94e2d5; /* teal */
+    --chart-3: #89b4fa; /* blue */
+    --chart-4: #cba6f7; /* mauve */
+    --chart-5: #f38ba8; /* red */
+    --sidebar: #1e1e2e; /* base */
+    --sidebar-foreground: #cdd6f4; /* text */
+    --sidebar-primary: #89b4fa; /* blue */
+    --sidebar-primary-foreground: #1e1e2e; /* base */
+    --sidebar-accent: #313244; /* surface0 */
+    --sidebar-accent-foreground: #cdd6f4; /* text */
+    --sidebar-border: #45475a; /* surface1 */
+    --sidebar-ring: #89b4fa; /* blue */
+
+    /* Custom colors for content */
+    --text-secondary: #bac2de; /* subtext1 */
+    --color-red: #f38ba8;
+    --color-peach: #fab387;
+    --color-yellow: #f9e2af;
+    --color-green: #a6e3a1;
+    --color-teal: #94e2d5;
+    --color-sky: #89dceb;
+    --color-sapphire: #74c7ec;
+    --color-blue: #89b4fa;
+    --color-lavender: #b4befe;
+    --color-mauve: #cba6f7;
+    --color-subtext0: #a6adc8;
+    --color-overlay2: #9399b2;
+    --color-surface2: #585b70;
+    --color-surface1: #45475a;
+    --color-surface0: #313244;
+  }
+
+  html[data-theme="light"] {
+    --radius: 0;
+    /* Catppuccin Latte Base Colors */
+    --background: #eff1f5; /* base */
+    --foreground: #4c4f69; /* text */
+    --card: #e6e9f0; /* mantle */
+    --card-foreground: #4c4f69; /* text */
+    --popover: #e6e9f0; /* mantle */
+    --popover-foreground: #4c4f69; /* text */
+    --primary: #1e66f5; /* blue */
+    --primary-foreground: #eff1f5; /* base */
+    --secondary: #e0e6f0; /* surface0 */
+    --secondary-foreground: #4c4f69; /* text */
+    --muted: #e0e6f0; /* surface0 */
+    --muted-foreground: #6c7086; /* subtext0 */
+    --accent: #04a5e5; /* sky */
+    --accent-foreground: #eff1f5; /* base */
+    --destructive: #d20f39; /* red */
+    --border: #ccd0da; /* surface1 */
+    --input: #ccd0da; /* surface1 */
+    --ring: #1e66f5; /* blue */
+
+    /* Custom colors for content - Latte versions */
+    --text-secondary: #5c5f77;
+    --color-red: #d20f39;
+    --color-peach: #fe640b;
+    --color-yellow: #df8e1d;
+    --color-green: #40a02b;
+    --color-teal: #179299;
+    --color-sky: #04a5e5;
+    --color-sapphire: #209fb5;
+    --color-blue: #1e66f5;
+    --color-lavender: #7287fd;
+    --color-mauve: #8839ef;
+    --color-subtext0: #6c6f85;
+    --color-overlay2: #7c7f93;
+    --color-surface2: #acb0be;
+    --color-surface1: #bcc0cc;
+    --color-surface0: #ccd0da;
+  }
+
+  html[data-theme="dark"] {
+    /* Catppuccin Mocha Colors - same as :root */
+    --background: #1e1e2e; /* base */
+    --foreground: #cdd6f4; /* text */
+    --card: #181825; /* mantle */
+    --card-foreground: #cdd6f4; /* text */
+    --popover: #181825; /* mantle */
+    --popover-foreground: #cdd6f4; /* text */
+    --primary: #89b4fa; /* blue */
+    --primary-foreground: #1e1e2e; /* base */
+    --secondary: #313244; /* surface0 */
+    --secondary-foreground: #cdd6f4; /* text */
+    --muted: #313244; /* surface0 */
+    --muted-foreground: #a6adc8; /* subtext0 */
+    --accent: #89dceb; /* sky */
+    --accent-foreground: #1e1e2e; /* base */
+    --destructive: #f38ba8; /* red */
+    --border: #45475a; /* surface1 */
+    --input: #45475a; /* surface1 */
+    --ring: #89b4fa; /* blue */
+    --chart-1: #fab387; /* peach */
+    --chart-2: #94e2d5; /* teal */
+    --chart-3: #89b4fa; /* blue */
+    --chart-4: #cba6f7; /* mauve */
+    --chart-5: #f38ba8; /* red */
+    --sidebar: #1e1e2e; /* base */
+    --sidebar-foreground: #cdd6f4; /* text */
+    --sidebar-primary: #89b4fa; /* blue */
+    --sidebar-primary-foreground: #1e1e2e; /* base */
+    --sidebar-accent: #313244; /* surface0 */
+    --sidebar-accent-foreground: #cdd6f4; /* text */
+    --sidebar-border: #45475a; /* surface1 */
+    --sidebar-ring: #89b4fa; /* blue */
+
+    /* Custom colors for content */
+    --text-secondary: #bac2de; /* subtext1 */
+    --color-red: #f38ba8;
+    --color-peach: #fab387;
+    --color-yellow: #f9e2af;
+    --color-green: #a6e3a1;
+    --color-teal: #94e2d5;
+    --color-sky: #89dceb;
+    --color-sapphire: #74c7ec;
+    --color-blue: #89b4fa;
+    --color-lavender: #b4befe;
+    --color-mauve: #cba6f7;
+    --color-subtext0: #a6adc8;
+    --color-overlay2: #9399b2;
+    --color-surface2: #585b70;
+    --color-surface1: #45475a;
+    --color-surface0: #313244;
+  }
 }
 
 @theme inline {
@@ -81,44 +195,55 @@ body {
   font-family: var(--font-hack), monospace;
 }
 
-html.light {
-  --radius: 0;
-  /* Catppuccin Latte Base Colors */
-  --background: #eff1f5; /* base */
-  --foreground: #4c4f69; /* text */
-  --card: #e6e9f0; /* mantle */
-  --card-foreground: #4c4f69; /* text */
-  --popover: #e6e9f0; /* mantle */
-  --popover-foreground: #4c4f69; /* text */
-  --primary: #1e66f5; /* blue */
-  --primary-foreground: #eff1f5; /* base */
-  --secondary: #e0e6f0; /* surface0 */
-  --secondary-foreground: #4c4f69; /* text */
-  --muted: #e0e6f0; /* surface0 */
-  --muted-foreground: #6c7086; /* subtext0 */
-  --accent: #04a5e5; /* sky */
-  --accent-foreground: #eff1f5; /* base */
-  --destructive: #d20f39; /* red */
-  --border: #ccd0da; /* surface1 */
-  --input: #ccd0da; /* surface1 */
-  --ring: #1e66f5; /* blue */
-}
-
 /* Custom Catppuccin color utilities */
 @layer utilities {
-  .text-cat-blue {
-    @apply text-primary;
+  /* Utility classes for theme-aware colors */
+  .text-secondary {
+    color: var(--text-secondary);
   }
-  
+
   .text-cat-red {
-    @apply text-destructive;
+    color: var(--color-red);
   }
-  
+  .text-cat-peach {
+    color: var(--color-peach);
+  }
+  .text-cat-yellow {
+    color: var(--color-yellow);
+  }
   .text-cat-green {
-    @apply text-[#a6e3a1];
+    color: var(--color-green);
   }
-  
+  .text-cat-teal {
+    color: var(--color-teal);
+  }
   .text-cat-sky {
-    @apply text-accent;
+    color: var(--color-sky);
+  }
+  .text-cat-sapphire {
+    color: var(--color-sapphire);
+  }
+  .text-cat-blue {
+    color: var(--color-blue);
+  }
+  .text-cat-mauve {
+    color: var(--color-mauve);
+  }
+  .text-cat-subtext0 {
+    color: var(--color-subtext0);
+  }
+
+  .bg-cat-surface0 {
+    background-color: var(--color-surface0);
+  }
+  .bg-cat-surface1 {
+    background-color: var(--color-surface1);
+  }
+  .bg-cat-surface2 {
+    background-color: var(--color-surface2);
+  }
+
+  .border-cat-surface1 {
+    border-color: var(--color-surface1);
   }
 }
