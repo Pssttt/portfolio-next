@@ -246,4 +246,8 @@ body {
   .border-cat-surface1 {
     border-color: var(--color-surface1);
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
 }

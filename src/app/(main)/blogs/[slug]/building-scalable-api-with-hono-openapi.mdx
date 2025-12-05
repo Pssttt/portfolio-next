@@ -1,0 +1,366 @@
+---
+title: "Building a Scalable REST API with Hono and OpenAPI"
+date: "2025-10-06"
+excerpt: "How I architected a type-safe REST API using Hono, Zod OpenAPI, and Prisma for our Smart City Hub platform serving 16+ integrated teams."
+ogImage: "/blogs/og/building-scalable-api-with-hono-openapi.png"
+---
+
+# The Challenge
+
+> **Note**: The code examples in this post are simplified reference implementations designed as guidelines for our development teams. They demonstrate architectural patterns and best practices but may not include all production-level error handling, security measures, or edge cases.
+
+As part of our university's integrated project, we needed to build a comprehensive API that could handle multiple domains - healthcare, transportation, emergency services, waste management, and more. The API needed to be type-safe, well-documented, and maintainable across 16 teams with 50+ developers.
+
+## Tech Stack
+
+```typescript
+// Example configuration for reference
+{
+  "runtime": "Node.js 20+",
+  "framework": "Hono 4.9",
+  "validation": "Zod 4.1",
+  "documentation": "@hono/zod-openapi",
+  "database": "PostgreSQL with Prisma",
+  "package-manager": "pnpm 10.17"
+}
+```
+
+## Project Architecture
+
+Our API follows a modular architecture with clear separation of concerns:
+
+```
+backend/
+├── src/
+│   ├── modules/
+│   │   ├── user/
+│   │   │   ├── controllers/
+│   │   │   ├── services/
+│   │   │   ├── models/
+│   │   │   ├── schemas/
+│   │   │   ├── routes/
+│   │   │   └── types/
+│   │   └── _example/
+│   ├── config/
+│   ├── middlewares/
+│   ├── errors/
+│   └── utils/
+```
+
+### Module Structure
+
+Each feature module follows this pattern:
+
+- **Controllers**: Handle HTTP requests/responses
+- **Services**: Business logic and validation
+- **Models**: Database operations with Prisma
+- **Schemas**: Zod schemas and OpenAPI route definitions
+- **Routes**: Route setup and middleware
+- **Types**: TypeScript interfaces and types
+
+## Setting Up Hono with OpenAPI
+
+### 1. Initialize the Application
+
+```typescript
+// Example: Basic Hono setup with OpenAPI documentation
+// This is a simplified reference implementation
+import { serve } from "@hono/node-server";
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { swaggerUI } from "@hono/swagger-ui";
+
+const app = new OpenAPIHono();
+
+// Setup OpenAPI documentation
+app.doc("/doc", {
+  openapi: "3.0.0",
+  info: {
+    version: "1.0.0",
+    title: "Smart City Hub",
+    description: "A comprehensive API",
+  },
+  servers: [
+    {
+      url: "http://localhost:3000",
+      description: "Local development server",
+    },
+  ],
+});
+
+// Swagger UI
+app.get("/swagger", swaggerUI({ url: "/doc" }));
+```
+
+### 2. Define Zod Schemas
+
+We use Zod for runtime validation and automatic OpenAPI schema generation:
+
+```typescript
+// Example: Schema definitions for reference
+import { z } from "zod";
+import { createRoute } from "@hono/zod-openapi";
+
+// Request schema
+const CreateUserSchema = z.object({
+  name: z.string().min(2),
+  email: z.string().email(),
+  avatar: z.string().url().optional(),
+});
+
+// Response schema
+const UserSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string(),
+  email: z.string().email(),
+  avatar: z.string().url().optional(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+});
+
+// OpenAPI route definition
+export const createUserRoute = createRoute({
+  method: "post",
+  path: "/users",
+  tags: ["Users"],
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: CreateUserSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    201: {
+      description: "User created successfully",
+      content: {
+        "application/json": {
+          schema: z.object({
+            success: z.boolean(),
+            data: z.object({ user: UserSchema }),
+            message: z.string(),
+            timestamp: z.string(),
+          }),
+        },
+      },
+    },
+  },
+});
+```
+
+### 3. Implement Controllers
+
+Controllers handle the HTTP layer:
+
+```typescript
+// Example: Controller pattern for reference
+import type { Context } from "hono";
+import { UserService } from "../services";
+import { successResponse } from "@/utils/response";
+
+export const createUser = async (c: Context) => {
+  const body = await c.req.json();
+  const user = await UserService.createUser(body);
+  return successResponse(c, { user }, 201, "User created successfully");
+};
+```
+
+### 4. Service Layer with Business Logic
+
+```typescript
+// Example: Service layer pattern for reference
+import { UserModel } from "../models";
+import { NotFoundError, ValidationError } from "@/errors";
+
+export const createUser = async (data: CreateUserData): Promise<User> => {
+  if (!data.name) {
+    throw new ValidationError("User name is required");
+  }
+
+  // Check for existing user
+  const existing = await UserModel.findByEmail(data.email);
+  if (existing) {
+    throw new ValidationError("Email already exists");
+  }
+
+  return await UserModel.create(data);
+};
+```
+
+### 5. Database Layer with Prisma
+
+```typescript
+// Example: Database access pattern for reference
+import { prisma } from "@/config/client";
+
+export const create = async (data: CreateUserData): Promise<User> => {
+  return await prisma.users.create({
+    data: {
+      username: data.name.toLowerCase().replace(/\s+/g, "_"),
+      email: data.email,
+      password_hash: await hashPassword(data.password),
+      user_profiles: {
+        create: {
+          first_name: data.name,
+        },
+      },
+    },
+  });
+};
+```
+
+## Error Handling
+
+We implemented a centralized error handling system:
+
+```typescript
+// Example: Error handling pattern for reference
+// Custom error classes
+export abstract class BaseError extends Error {
+  abstract readonly statusCode: number;
+  abstract readonly name: string;
+  abstract readonly isOperational: boolean;
+
+  constructor(message: string) {
+    super(message);
+    Object.setPrototypeOf(this, new.target.prototype);
+    Error.captureStackTrace(this);
+  }
+
+  toJSON(): {
+    name: string;
+    message: string;
+    statusCode: number;
+    stack?: string;
+  } {
+    return {
+      name: this.name,
+      message: this.message,
+      statusCode: this.statusCode,
+    };
+  }
+}
+
+export class NotFoundError extends BaseError {
+  readonly name = "NotFoundError";
+  readonly statusCode = 404;
+  readonly isOperational = true;
+
+  constructor(message: string = "Resource not found") {
+    super(message);
+  }
+}
+
+// Error middleware
+export function errorHandler(err: Error, c: Context) {
+  if (err instanceof BaseError) {
+    return c.json(err.toJSON(), err.statusCode as ContentfulStatusCode);
+  }
+
+  if (config.nodeEnv === 'development') {
+    console.error('Unhandled error:', {
+      message: err.message,
+      stack: err.stack,
+      name: err.name,
+    });
+  }
+
+  return c.json(
+    internalError.toJSON(),
+    internalError.statusCode as ContentfulStatusCode
+  );
+}
+
+  // Handle Prisma errors, validation errors, etc.
+  // ...
+};
+
+app.onError(errorHandler);
+```
+
+## Benefits We Achieved
+
+### 1. Type Safety End-to-End
+
+With Zod schemas, we get:
+
+- Runtime validation
+- TypeScript type inference
+- Automatic OpenAPI schema generation
+- No manual type maintenance
+
+### 2. Excellent Developer Experience
+
+```bash
+$ pnpm dev
+Server is running on http://localhost:3000
+API Documentation on http://localhost:3000/swagger
+OpenAPI Spec on http://localhost:3000/doc
+```
+
+Developers can immediately see and test all endpoints via Swagger UI.
+
+### 3. Consistent API Design
+
+All responses follow a standard format:
+
+```typescript
+// Example: Standardized response format for reference
+// Success response
+export function successResponse<T, S extends ContentfulStatusCode = 200>(
+  c: Context,
+  data: T,
+  statusCode?: S,
+  message?: string
+) {
+  const response = {
+    success: true,
+    data,
+    ...(message && { message }),
+    timestamp: new Date().toISOString(),
+  };
+
+  return c.json(response, statusCode || 200);
+}
+
+{
+  "success": true,
+  "data": { /* actual data */ },
+  "message": "Operation successful",
+  "timestamp": "2024-10-11T14:00:00.000Z"
+}
+
+// Error response
+{
+  "success": false,
+  "error": {
+    "name": "ValidationError",
+    "message": "Email already exists",
+    "statusCode": 400
+  },
+  "timestamp": "2024-10-11T14:00:00.000Z"
+}
+```
+
+## Key Takeaways
+
+1. **Hono + Zod OpenAPI** is a powerful combination for building type-safe APIs
+2. **Modular architecture** enables multiple teams to work independently
+3. **Automatic documentation** saves hours of manual work
+4. **Type inference** from Zod schemas eliminates type duplication
+5. **Edge-ready** architecture means we can deploy anywhere
+
+## What's Next?
+
+In the next post, I'll dive into our Prisma schema design and how we manage a complex database with 60+ tables across multiple domains.
+
+## Resources
+
+- [Hono Documentation](https://hono.dev/)
+- [Zod OpenAPI](https://github.com/honojs/middleware/tree/main/packages/zod-openapi)
+- [Our Project Repository](https://github.com/CSC290-2025/)
+
+---
+
+_This is part of a series on building the Smart City Hub platform. Check out the next post on database design with Prisma._

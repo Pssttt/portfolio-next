@@ -1,0 +1,235 @@
+---
+title: "Day One as Dev Lead"
+date: "2025-09-15"
+excerpt: "Reflections and lessons from my first day stepping into a development lead role."
+ogImage: "/blogs/og/day-one-as-dev-lead.png"
+---
+
+# The Meeting That Changed Everything
+
+"Hey, we need a Dev Lead for the new integrated project. Why not vote for PSST?" (actually happened)
+
+Me (inner mind): "Sure! Sounds fun."
+
+_Opens project brief_
+
+**Smart City Hub**. Healthcare. Transportation. Emergency services. Events. Waste management. Finance. Real-time data. Multiple teams. Polyrepo architecture.
+
+Me: "...what have I done?"
+
+## The Reality Check
+
+This isn't a solo project. This isn't even a small team project. This is:
+
+- Multiple teams working in parallel
+- Separate repos for backend, frontend, maybe more
+- And I'm supposed to keep it all running smoothly
+
+No pressure.
+
+## First Things First: The Tech Stack
+
+Before teams start building, I need to decide: what are we building with?
+
+### Backend: Hono + TypeScript
+
+Why this?
+
+```typescript
+// This is what sold me
+import { OpenAPIHono } from "@hono/zod-openapi";
+
+const app = new OpenAPIHono();
+
+// Routes + validation + docs in one place
+app.openapi(createUserRoute, async (c) => {
+  const body = c.req.valid("json"); // Already validated!
+  return c.json({ user }, 201);
+});
+```
+
+Type-safe. Auto-documented. Fast. Perfect for teams who need to move quickly without breaking things.
+
+### Database: PostgreSQL + Prisma
+
+The database team is setting up PostgreSQL. Probably PostGIS for maps. Going to be a lot of tables.
+
+Prisma makes sense here:
+
+```prisma
+model users {
+  id    Int    @id @default(autoincrement())
+  email String @unique
+
+  // maybe even these
+  profiles user_profiles?
+  wallets  wallets[]
+  events   events[]
+}
+```
+
+One schema file. Everyone knows the structure. TypeScript types auto-generated. No SQL string typos.
+
+### The Polyrepo Structure
+
+We're going polyrepo, not monorepo. Each major component is its own repo under https://github.com/CSC290-2025/
+
+```
+CSC290-2025/
+├── backend/         # Hono API
+├── frontend/        # React app
+└── docs/           # Shared documentation
+```
+
+Why polyrepo? Different deployment cycles. Different teams. Less merge hell. But we'll need strong contracts between repos (that's where OpenAPI comes in).
+
+## The Standards I'm Setting
+
+### 1. OpenAPI Contract First
+
+Every endpoint starts with an OpenAPI definition:
+
+```typescript
+// just an example, I actually used a helper
+// to make it easy for others
+const createUserRoute = createRoute({
+  method: "post",
+  path: "/users",
+  request: {
+    body: {
+      content: {
+        "application/json": {
+          schema: z.object({
+            name: z.string().min(2),
+            email: z.string().email(),
+          }),
+        },
+      },
+    },
+  },
+  responses: {
+    201: { description: "User created" },
+  },
+});
+```
+
+Frontend team can see this at `/swagger`. No guessing what fields to send.
+
+### 2. Consistent Response Format
+
+All API responses follow the same structure:
+
+```typescript
+// Success
+{
+  "success": true,
+  "data": { /* actual data */ },
+  "message": "Operation successful",
+  "timestamp": "2025-01-15T10:00:00Z"
+}
+
+// Error
+{
+  "success": false,
+  "error": {
+    "name": "ValidationError",
+    "message": "Email is required",
+    "statusCode": 400
+  },
+  "timestamp": "2025-01-15T10:00:00Z"
+}
+```
+
+Frontend never has to guess the response shape.
+
+### 3. TypeScript Everywhere
+
+Frontend, backend, shared types. No JavaScript. TypeScript catches bugs before they reach production.
+
+### 4. pnpm for Package Management
+
+Faster than npm. More efficient than yarn. Done.
+
+## The Challenges I'm Expecting
+
+### Challenge 1: Keeping Repos in Sync
+
+Frontend needs to know when backend API changes. Solution: OpenAPI spec in a shared location. Frontend generates types from it. (Or maybe just check the backend swagger)
+
+### Challenge 2: Different Team Velocities
+
+Some teams will move fast. Others slower. Need to make sure fast teams don't block slow teams.
+
+### Challenge 3: Integration Hell
+
+When we finally connect all the repos... that's when the fun begins. Planning integration milestones early.
+
+### Challenge 4: Code Quality Across Teams
+
+Can't review every PR. Need automated checks:
+
+- ESLint + Prettier (same config across all repos)
+- TypeScript strict mode
+- GitHub Actions for CI/CD
+
+## The First Week Plan
+
+**Day 1-2:** Backend repo setup
+
+- Initialize Hono project
+- Setup Prisma (once DB is ready)
+- Basic product CRUD as example
+- OpenAPI docs working
+
+**Day 3-4:** Documentation
+
+- Architecture diagrams
+- API standards document
+- Git workflow guide
+- Example code for teams to copy
+
+**Spring [0]:** First integration
+
+- Frontend team connects to backend
+- Test the OpenAPI contract
+- Fix any issues
+- Document learnings
+
+## What Keeps Me Up at Night
+
+- What if teams don't follow the standards?
+- What if I can't keep up with all the questions?
+- What if we miss the deadline?
+
+But also:
+
+- This is a chance to build something real
+- Multiple teams working together successfully
+- A project that could actually be used
+- Experience that will matter a lot
+
+## The Excitement
+
+Yes, it's overwhelming. But also? It's exciting.
+
+We're building a Smart City platform. Real features. Multiple domains integrated together.
+
+And I get to shape how it's built from day one.
+
+## Resources I'm Bookmarking
+
+- [Hono Documentation](https://hono.dev/)
+- [Prisma Best Practices](https://www.prisma.io/docs)
+- [OpenAPI Specification](https://swagger.io/specification/)
+- [pnpm Docs](https://pnpm.io/)
+- Coffee. Lots of coffee.
+
+## What's Next
+
+Next post: Setting up the backend repo from scratch, choosing the module structure, and getting that first endpoint working.
+
+Wish me luck. I'll need it.
+
+---
+
+_Follow along as I document this journey. Next up: Backend architecture decisions and the first working API._

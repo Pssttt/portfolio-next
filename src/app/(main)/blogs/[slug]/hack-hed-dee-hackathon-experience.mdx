@@ -1,0 +1,84 @@
+---
+title: "My Experience at Hack Hed Dee - Building a Thai Sign Language Translator"
+date: "2025-11-03"
+excerpt: "Three days building a Thai Sign Language translation app with AI/ML. We placed 3rd, learned a ton about real-world ML challenges, and had an amazing time."
+ogImage: "/blogs/og/hack-hed-dee-hackathon-experience.png"
+---
+
+# Actual Experience
+
+Just got back from Hack Hed Dee, a 3-day hackathon focused on disability solutions, and wow - what a journey. Our team of 5 managed to snag 3rd place with our Thai Sign Language (TSL) translation/interpretation app. Still processing everything that happened!
+
+## What Was Hack Hed Dee?
+
+Hack Hed Dee ran from October 29-31, 2025, bringing together 6 carefully selected teams to tackle disability-focused tech solutions. Unlike typical hackathons where hundreds of teams apply and get whittled down, we were pre-selected for these three intensive days.
+
+The organizers really took care of us, put us up in a nice hotel which was honestly a game changer. Having a proper place to crash between the long coding sessions made such a difference. The whole setup felt professional and well-thought-out.
+
+![The whole hackathon group photo](/blogs/assets/hack-hed-dee/group-photo.jpg)
+
+## Our Concept: Breaking Down Communication Barriers
+
+We decided to tackle something that felt really important - Thai Sign Language translation. The idea was to build a mobile app that could translate TSL into text and vice versa, using machine learning models.
+
+The communication gap between Thai sign language users and the general population is huge, especially in employment settings. We wanted to build something that could actually make a difference in people's daily lives.
+
+## The Technical Challenge (And Our Struggles)
+
+Here's where things got interesting - and by interesting, I mean challenging as hell.
+
+We went with two different approaches:
+
+### Approach 1: Fingerspelling + MediaPipe
+
+Our first attempt used MediaPipe for hand tracking combined with fingerspelling recognition. The concept was solid, but the execution... not so much. The accuracy was pretty terrible, mainly because there just isn't enough quality TSL dataset available online. We were basically trying to train a model with scraps.
+
+### Approach 2: The Classifier Approach
+
+Then we found this massive dataset on Kaggle - footage from Thailand's parliament with hand sign interpreters. 185GB of data. Sounds perfect, right?
+
+Well, sort of. The good news was the accuracy was much better. The bad news? Our hardware couldn't handle training on the full dataset. We're talking about massive computational requirements that our laptops just couldn't cope with. Plus, it was more of a classifier than actual sign recognition, so it had limitations in real-world application.
+
+![Group photo during our presentation Q&A](/blogs/assets/hack-hed-dee/presentation-qa.jpg)
+
+## Day-to-Day Breakdown
+
+**Day 1** was all about understanding the problem space. We spent a lot of time talking to mentors and people with lived experience in the community. That research phase was crucial - it shaped how we thought about the entire solution.
+
+**Day 2** was pure grind mode. Split between data preprocessing, model training (what we could manage), and building the mobile app interface. The MediaPipe experiments happened here, along with the disappointing realization about dataset limitations.
+
+**Day 3** was crunch time - switching to the classifier approach, getting the demo ready, and preparing our presentation. The whole team was running on caffeine and determination at this point (+2 hours of sleep).
+
+![Where we get our participation medal awarded](/blogs/assets/hack-hed-dee/medal-ceremony.jpg)
+
+## The Presentation and Results
+
+When it came time to present, we were honest about our challenges. We showed what worked, explained what didn't, and talked about the real-world impact our solution could have with proper resources and data.
+
+The judges appreciated our transparency about the technical limitations. They could see the potential in our approach, even if we couldn't fully realize it in three days.
+
+When they announced 3rd place, honestly, we were thrilled. All 6 teams had put in incredible work, and the competition was fierce. The top two teams definitely earned their spots with some really innovative solutions.
+
+![Trophy and medal group photo with our 2 mentors and one visual impaired person](/blogs/assets/hack-hed-dee/trophy-group.jpg)
+
+## What I Learned
+
+This hackathon taught me a lot about the realities of AI/ML development. You can have a great concept, but data quality and computational resources are often the real bottlenecks. Sometimes the biggest challenge isn't writing the algorithm - it's getting the right data to train it on.
+
+Working on something that directly impacts people's lives also felt different from typical hackathon projects. There was real weight to what we were building, real people who could benefit from it working properly.
+
+The mentorship throughout the event was incredible. Having people with domain expertise guide us made such a difference in understanding the actual needs of the community we were trying to serve. Huge shoutout to my teammates for making me feel represented!
+
+![The one with the trophy and our mentors and one visual impaired person](/blogs/assets/hack-hed-dee/trophy-mentor.jpg)
+
+## Final Thoughts
+
+Hack Hed Dee was exhausting, challenging, and incredibly rewarding. It reminded me why I got into tech - not just to build cool stuff, but to solve real problems for real people.
+
+The TSL challenge is complex, and we definitely didn't solve it in three days. But we made progress, learned a ton, and hopefully contributed to moving the conversation forward.
+
+Plus, the hotel stay was pretty nice too! Would definitely do another hackathon like this again.
+
+If you're thinking about participating in purpose-driven hackathons, go for it. Even when your solution doesn't work perfectly, you might just learn something that matters.
+
+![Our Cool group photo](/blogs/assets/hack-hed-dee/cool-group.jpg)

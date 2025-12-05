@@ -1,0 +1,215 @@
+---
+title: "Polyrepo vs Monorepo: Real Talk"
+date: "2025-10-05"
+excerpt: "A practical comparison of polyrepo and monorepo architectures based on real-world experience."
+ogImage: "/blogs/og/polyrepo-vs-monorepo-real-talk.png"
+---
+
+# The Monorepo Hype
+
+Internet told me monorepos are the future. Google does it. Meta does it. Turborepo makes it easy.
+
+```
+monorepo/
+├── apps/
+│   ├── backend/
+│   ├── frontend/
+│   └── mobile/
+└── packages/
+    └── shared-types/
+```
+
+One repo. Atomic commits across services. Shared dependencies. The dream.
+
+## Why We Went Polyrepo Instead
+
+Our GitHub org: https://github.com/CSC290-2025/
+
+Separate repos for:
+
+- `backend` - Hono API
+- `frontend` - React app
+- `docs` - Shared documentation
+
+Why split them?
+
+### Reason 1: Different Teams, Different Speeds
+
+Frontend team is moving fast. Backend is setting up infrastructure. Mobile isn't even started yet.
+
+With a monorepo, everyone's commits in one history. Merge conflicts when frontend deploys? Annoying.
+
+With polyrepo: frontend deploys whenever. Backend deploys separately. Clean.
+
+### Reason 2: Different Deployment Cycles
+
+Backend might deploy once a day (new features, fixes).
+
+Frontend? Could be 5 times a day (UI tweaks, copy changes).
+
+Why should a frontend typo fix trigger a full monorepo CI run?
+
+### Reason 3: Access Control
+
+Not every team member needs access to everything.
+
+Backend repo: backend team.
+
+Frontend repo: frontend team.
+
+Infrastructure: infra team only.
+
+With a monorepo, everyone sees everything. Sometimes you don't want that.
+
+### Reason 4: Simpler Mental Model
+
+"I work on frontend. I clone the frontend repo. Done."
+
+vs
+
+"I work on frontend. I clone the monorepo (5GB). Install all dependencies (takes 10 minutes). Navigate to apps/frontend. Hope I didn't accidentally break the backend build."
+
+## The Pain Points (They're Real)
+
+### Pain 1: Type Sharing Hell
+
+Frontend needs to know backend types. In a monorepo:
+
+```typescript
+import { User } from "@repo/types";
+```
+
+Easy.
+
+In a polyrepo:
+
+- Backend exports OpenAPI spec
+- Frontend imports it... somehow
+- Or we copy-paste types (gross)
+- Or we make a separate npm package (overkill for a uni project)
+
+Current solution: OpenAPI spec gets generated, frontend generates types from it. Works, but not elegant.
+
+### Pain 2: Keeping Dependencies in Sync
+
+Backend: TypeScript 5.8, pnpm 10.17
+
+Frontend: TypeScript 5.7, npm 9.x
+
+Oops.
+
+In a monorepo, one `package.json` at the root. Everyone uses the same versions.
+
+In a polyrepo, need to actively coordinate. Made a shared config doc. Teams ignore it sometimes.
+
+### Pain 3: Cross-Repo Changes
+
+Backend changes the user API response format. Frontend needs to update.
+
+Monorepo: One PR. Changes both. Atomic.
+
+Polyrepo:
+
+1. Backend PR merged
+2. Tell frontend team
+3. Wait for frontend to update
+4. Hope nothing breaks in between
+
+### Pain 4: Documentation Drift
+
+We have a `docs` repo. Has architecture diagrams, API standards, etc.
+
+How often do teams check it? Not enough.
+
+In a monorepo, docs live in `/docs`. Right there. Harder to ignore.
+
+## What's Working Well
+
+### Win 1: Faster CI/CD
+
+Backend CI: ~2 minutes
+
+Frontend CI: ~3 minutes
+
+If we were in a monorepo? Probably 5-7 minutes for everything, even for a one-line change.
+
+### Win 2: Cleaner Git History
+
+Backend history: all backend changes.
+
+Frontend history: all frontend changes.
+
+No noise from unrelated changes.
+
+### Win 3: Independent Versioning
+
+Backend: v1.2.0
+
+Frontend: v2.0.1
+
+They don't have to match. Backend API is stable? Stays on 1.x. Frontend redesign? Jump to 2.0.
+
+### Win 4: Easier Onboarding
+
+New backend dev joins:
+
+"Clone this repo. Run `pnpm install`. Run `pnpm dev`. You're good."
+
+No monorepo complexity. No "wait which command do I run?"
+
+## The Hybrid Approach I Wish We Did
+
+Separate repos for major components (backend, frontend). But:
+
+```
+backend/
+├── src/
+└── packages/
+    └── api-types/  # Published as npm package
+```
+
+Backend publishes types. Frontend installs them:
+
+```bash
+pnpm add @csc290/api-types
+```
+
+Get the benefits of polyrepo (separate deploys, clean history) with the benefits of monorepo (shared types, single source of truth).
+
+Didn't think of this early enough. Maybe for the next project.
+
+## When Monorepo Would've Been Better
+
+If:
+
+- We had ONE team working on everything
+- Deploy all services together always
+- Wanted workspace commands like `pnpm build --filter=backend`
+- Type sharing was critical (not just nice-to-have)
+
+Then yeah, monorepo.
+
+## The Truth
+
+Neither is perfect. Both have tradeoffs.
+
+Monorepo: Better DX, more complexity, slower CI.
+
+Polyrepo: Simpler setup, coordination overhead, faster CI.
+
+Choose based on your team structure and deployment needs, not what's trendy on the Internet.
+
+## What I'd Tell Past Me
+
+Polyrepo is fine. But invest in:
+
+1. Shared ESLint/Prettier configs (publish as npm package) (now, I'm cloning in both repos)
+2. OpenAPI contract generation (automate this)
+3. Clear ownership boundaries (who owns what repo)
+4. Regular sync meetings (don't rely on Slack)
+
+And maybe... just maybe... consider a monorepo next time.
+
+---
+
+_Building the Smart City Hub School Integrated Project as Dev Lead. Follow along for more lessons learned the hard way._
