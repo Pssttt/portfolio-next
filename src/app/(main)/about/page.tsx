@@ -19,7 +19,7 @@ export default function AboutPage() {
   return (
     <>
       <div className="text-sm sm:text-base text-foreground mb-6 sm:mb-8 font-medium font-mono">
-        $ cat about.txt
+        $ bat about.txt
       </div>
       <div className="min-h-[400px]">
         <About />
