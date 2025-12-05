@@ -1,21 +1,5 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Hack";
-  src: url("/fonts/hack-regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: block;
-}
-
-@font-face {
-  font-family: "Hack";
-  src: url("/fonts/hack-bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-  font-display: block;
-}
-
 :root {
   --radius: 0;
   /* Catppuccin Mocha Base Colors */
@@ -88,10 +72,53 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --font-mono: var(--font-hack);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Hack", monospace;
+  font-family: var(--font-hack), monospace;
+}
+
+html.light {
+  --radius: 0;
+  /* Catppuccin Latte Base Colors */
+  --background: #eff1f5; /* base */
+  --foreground: #4c4f69; /* text */
+  --card: #e6e9f0; /* mantle */
+  --card-foreground: #4c4f69; /* text */
+  --popover: #e6e9f0; /* mantle */
+  --popover-foreground: #4c4f69; /* text */
+  --primary: #1e66f5; /* blue */
+  --primary-foreground: #eff1f5; /* base */
+  --secondary: #e0e6f0; /* surface0 */
+  --secondary-foreground: #4c4f69; /* text */
+  --muted: #e0e6f0; /* surface0 */
+  --muted-foreground: #6c7086; /* subtext0 */
+  --accent: #04a5e5; /* sky */
+  --accent-foreground: #eff1f5; /* base */
+  --destructive: #d20f39; /* red */
+  --border: #ccd0da; /* surface1 */
+  --input: #ccd0da; /* surface1 */
+  --ring: #1e66f5; /* blue */
+}
+
+/* Custom Catppuccin color utilities */
+@layer utilities {
+  .text-cat-blue {
+    @apply text-primary;
+  }
+  
+  .text-cat-red {
+    @apply text-destructive;
+  }
+  
+  .text-cat-green {
+    @apply text-[#a6e3a1];
+  }
+  
+  .text-cat-sky {
+    @apply text-accent;
+  }
 }
