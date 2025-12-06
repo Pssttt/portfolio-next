@@ -21,6 +21,7 @@ const hack = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://psstee.dev"),
   title: "Pyae Sone Shin Thant - Computer Science Student & Backend Developer",
   description:
     "CS student passionate about DevOps and Backend Development. Experience with React, Node.js, Hono, PostgreSQL, and cloud infrastructure.",
