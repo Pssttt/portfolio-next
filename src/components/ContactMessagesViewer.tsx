@@ -85,9 +85,6 @@ export function ContactMessagesViewer() {
         </div>
       )}
 
-      {messages.length === 0 && !loading && !error && (
-        <p className="text-muted-foreground">No messages yet</p>
-      )}
     </div>
   );
 }
