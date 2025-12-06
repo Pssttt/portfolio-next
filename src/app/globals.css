@@ -249,22 +249,31 @@ body {
 
   html {
     scroll-behavior: smooth;
-    cursor: none;
+    cursor: none !important;
+  }
+
+  * {
+    cursor: none !important;
   }
 
   a,
   button,
   [role="button"],
   input[type="submit"],
-  input[type="button"] {
-    cursor: none;
+  input[type="button"],
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  [contenteditable],
+  label {
+    cursor: none !important;
   }
 
   /* Terminal-styled cursor - main dot */
   #cursor-dot {
     --cursor-color: #89dceb;
     --cursor-size: 8px;
-    
+
     width: var(--cursor-size);
     height: var(--cursor-size);
     background: var(--cursor-color);
@@ -273,7 +282,11 @@ body {
     pointer-events: none;
     z-index: 9999;
     transform: translate(-50%, -50%);
-    transition: width 0.1s ease, height 0.1s ease, background 0.1s ease, box-shadow 0.1s ease;
+    transition:
+      width 0.1s ease,
+      height 0.1s ease,
+      background 0.1s ease,
+      box-shadow 0.1s ease;
     box-shadow: 0 0 4px rgba(137, 220, 235, 0.3);
   }
 
@@ -291,7 +304,7 @@ body {
   #cursor-ring {
     --ring-size: 24px;
     --ring-color: rgba(137, 220, 235, 0.3);
-    
+
     width: var(--ring-size);
     height: var(--ring-size);
     border: 1px solid var(--ring-color);
@@ -313,6 +326,33 @@ body {
     --ring-color: rgba(137, 220, 235, 0.8);
     opacity: 0.5;
     --ring-size: 20px;
+  }
+
+  /* Text input cursor - custom blinking text cursor */
+  #cursor-dot.cursor-text {
+    --cursor-size: 2px;
+    width: 2px;
+    height: 20px;
+    background: rgba(137, 220, 235, 0.8);
+    border: none;
+    box-shadow: 0 0 8px rgba(137, 220, 235, 0.6);
+    animation: text-cursor-blink 1s infinite;
+  }
+
+  #cursor-ring.cursor-text {
+    display: none;
+  }
+
+  @keyframes text-cursor-blink {
+    0%,
+    49%,
+    100% {
+      opacity: 1;
+    }
+    50%,
+    99% {
+      opacity: 0.2;
+    }
   }
 
   /* Hide custom cursor on mobile/touch */
@@ -340,7 +380,9 @@ body {
     color: var(--foreground);
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.2s ease, background-color 0.2s ease;
+    transition:
+      opacity 0.2s ease,
+      background-color 0.2s ease;
     z-index: 10;
   }
 
