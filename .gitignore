@@ -42,3 +42,6 @@ next-env.d.ts
 
 # resume tracker data
 /data/resume-downloads.json
+
+# contact form data
+/data/contact-messages.json
