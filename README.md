@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pyae Sone Shin Thant - Portfolio
 
-## Getting Started
+A modern, performant portfolio website built with **Next.js 16**, **React 19**, and **TypeScript**. Features MDX-based blog posts, dark mode support, and optimized for SEO and performance.
 
-First, run the development server:
+## 🚀 Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org) with App Router
+- **Language**: TypeScript
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com)
+- **Content**: [MDX](https://mdxjs.com) for blog posts with syntax highlighting
+- **Code Highlighting**: [Shiki](https://shiki.matsu.io)
+- **Fonts**: Custom "Hack" font with Next.js font optimization
+- **Dark Mode**: [next-themes](https://github.com/pacocoursey/next-themes)
+- **Code Quality**: [Biome](https://biomejs.dev)
+- **Deployment**: Docker, Vercel-ready (Coolify now)
+
+## 📋 Features
+
+- Server-side rendered React components
+- MDX blog with code syntax highlighting and auto-linked headings
+- Dark/Light theme support
+- Fully responsive design
+- Accessibility-first (skip-to-content, semantic HTML)
+- SEO optimized with metadata
+- Optimized fonts and assets
+- Docker support for containerized deployment
+
+## 🛠️ Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm (recommended) or npm
+
+### Installation
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Clone repository
+git clone https://github.com/Pssttt/portfolio-next
+cd portfolio-next
+
+# Install dependencies
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Development
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open [http://localhost:3000](http://localhost:3000) to view the site. Changes auto-reload.
 
-## Learn More
+### Build & Production
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+# Build for production
+pnpm build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Start production server
+pnpm start
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Run linter/formatter
+pnpm lint
+pnpm format
+```
 
-## Deploy on Vercel
+## 📁 Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── app/                    # Next.js App Router
+│   ├── (home)/            # Home page layout
+│   ├── (main)/            # Main content routes
+│   │   └── blogs/         # Blog posts
+│   ├── layout.tsx         # Root layout
+│   └── favicon.ico
+├── components/            # Reusable React components
+├── data/                  # Static data & configuration
+├── hooks/                 # Custom React hooks
+└── lib/                   # Utilities & helpers
+public/
+├── fonts/                 # Custom fonts
+├── blogs/                 # Blog post assets
+└── [favicons & manifest]
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📝 Writing Blog Posts
+
+Blog posts are MDX files stored in `public/blogs/`. Each post requires front matter:
+
+```yaml
+---
+title: "Your Post Title"
+date: "2025-12-06"
+excerpt: "Brief description"
+---
+```
+
+Posts support:
+
+- Markdown formatting
+- Code blocks with syntax highlighting
+- GitHub Flavored Markdown (tables, strikethrough, etc.)
+- Auto-linked headings with anchor navigation
+
+## 🐳 Docker Deployment
+
+```bash
+docker build -t portfolio .
+docker run -p 3000:3000 portfolio
+```
+
+## 📈 Performance Optimizations
+
+- Next.js Image optimization
+- Custom font preloading
+- Automatic code splitting
+- Static site generation where applicable
+- Metadata optimization for SEO
+
+## 🔧 Configuration
+
+- **Tailwind**: `tailwind.config.mjs`
+- **Next.js**: `next.config.mjs`
+- **Biome**: `biome.json` (linting & formatting)
+- **TypeScript**: `tsconfig.json`
+
+## 📜 License
+
+Personal portfolio project.
