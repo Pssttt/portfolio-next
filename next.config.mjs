@@ -1,14 +1,9 @@
-import type { NextConfig } from "next";
 import createMDX from "@next/mdx";
 
-const nextConfig: NextConfig = {
+const nextConfig = {
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   reactCompiler: true,
-} as any;
-
-(nextConfig as any).metadataBase = new URL(
-  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-);
+};
 
 const withMDX = createMDX({
   options: {
@@ -24,7 +19,10 @@ const withMDX = createMDX({
       ],
       [
         "rehype-pretty-code",
-        { theme: "catppuccin-mocha", keepBackground: true },
+        {
+          theme: "catppuccin-mocha",
+          keepBackground: true,
+        },
       ],
     ],
   },
