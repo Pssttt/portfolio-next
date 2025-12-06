@@ -20,11 +20,7 @@ export default async function BlogsPage() {
 
   return (
     <>
-      <div className="text-sm sm:text-base text-foreground mb-6 sm:mb-8 font-medium font-mono">
-        $ ls blogs/
-      </div>
-
-      <div className="space-y-4 my-12">
+      <div className="space-y-4">
         <h1 className="text-2xl sm:text-3xl font-light text-foreground">
           <span className="text-primary">[blogs]</span> My Writings
         </h1>
@@ -34,33 +30,46 @@ export default async function BlogsPage() {
         </p>
       </div>
 
-      <div className="space-y-4">
-        {posts.map((post) => (
+      <div className="space-y-4 pt-4">
+        {posts.map((post, index) => (
           <Link
             key={post.slug}
             href={`/blogs/${post.slug}`}
-            className="block group border border-primary/20 p-6 rounded hover:border-primary/40 hover:bg-card/50 transition-all"
+            className="block border-2 border-primary/40 bg-card/40 rounded-lg px-6 py-5 hover:border-primary/80 hover:bg-card/70 hover:shadow-lg transition-all group"
           >
             <div className="space-y-2">
-              <div className="flex items-center justify-between gap-4">
-                <h2 className="text-lg font-semibold text-cat-sapphire group-hover:text-cat-teal transition-colors">
-                  {post.title}
-                </h2>
-                <time className="text-xs text-muted-foreground flex-shrink-0 whitespace-nowrap">
+              <span className="text-cat-sapphire text-sm font-mono font-semibold">
+                #{String(posts.length - index).padStart(2, "0")}
+              </span>
+              <h2 className="text-lg sm:text-xl text-foreground font-semibold group-hover:text-cat-sapphire transition-colors">
+                {post.title}
+              </h2>
+              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                <span className="text-cat-yellow">
                   {new Date(post.date).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
                   })}
-                </time>
+                </span>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <p className="text-secondary text-sm leading-relaxed">
                 {post.excerpt}
               </p>
+              <span className="text-cat-sky group-hover:text-cat-teal text-sm hover:underline inline-flex items-center gap-1 font-medium">
+                Read more →
+              </span>
             </div>
           </Link>
         ))}
       </div>
+
+      {posts.length === 0 && (
+        <div className="text-muted-foreground text-sm py-8">
+          <p>$ echo "No posts yet. Coming soon..."</p>
+          <p className="pt-2">No posts yet. Coming soon...</p>
+        </div>
+      )}
     </>
   );
 }

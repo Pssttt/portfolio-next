@@ -32,7 +32,7 @@ export async function generateMetadata({
     openGraph: {
       title: post.title,
       description: post.excerpt,
-      images: post.ogImage ? [{ url: post.ogImage }] : [],
+      images: [{ url: `./opengraph-image` }],
     },
   };
 }
@@ -53,7 +53,7 @@ export default async function BlogPage({
 
   const MDXContent = dynamic(
     () => import(`./${slug}.mdx`).then((mod) => mod.default),
-    { loading: () => <div>Loading...</div> }
+    { loading: () => <div>Loading...</div> },
   );
 
   return (
@@ -145,9 +145,7 @@ export default async function BlogPage({
                   />
                 </svg>
                 <div>
-                  <div className="text-xs text-muted-foreground mb-1">
-                    Next
-                  </div>
+                  <div className="text-xs text-muted-foreground mb-1">Next</div>
                   <div className="text-sm text-foreground group-hover:text-primary transition-colors">
                     {adjacentPosts.next.title}
                   </div>
