@@ -1,6 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+declare global {
+  interface Window {
+    turnstile: any;
+  }
+}
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
@@ -12,6 +18,23 @@ export function ContactForm() {
     "idle"
   );
   const [message, setMessage] = useState("");
+  const [turnstileReady, setTurnstileReady] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState("");
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+    script.async = true;
+    script.defer = true;
+    script.onload = () => {
+      setTurnstileReady(true);
+      window.turnstile.render("#turnstile-container", {
+        sitekey: process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!,
+        callback: (token: string) => setTurnstileToken(token),
+      });
+    };
+    document.head.appendChild(script);
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -25,10 +48,16 @@ export function ContactForm() {
     setStatus("loading");
 
     try {
+      if (!turnstileToken) {
+        setStatus("error");
+        setMessage("Please complete the verification");
+        return;
+      }
+
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, recaptchaToken: turnstileToken }),
       });
 
       const data = await response.json();
@@ -103,9 +132,11 @@ export function ContactForm() {
         />
       </div>
 
+      <div id="turnstile-container" className="mb-4" />
+
       <button
         type="submit"
-        disabled={status === "loading"}
+        disabled={status === "loading" || !turnstileToken}
         className="px-6 py-2 bg-primary text-primary-foreground rounded hover:opacity-90 disabled:opacity-50 transition-opacity font-medium"
       >
         {status === "loading" ? "Sending..." : "Send Message"}

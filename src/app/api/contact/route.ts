@@ -1,10 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { Resend } from "resend";
-import {
-  getUserReplyEmail,
-  getAdminNotificationEmail,
-} from "@/lib/email-templates";
+import { getAdminNotificationEmail } from "@/lib/email-templates";
 
 interface ContactMessage {
   id: string;
@@ -39,13 +36,50 @@ function sanitizeHtml(text: string): string {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    let { name, email, message } = body;
+    let { name, email, message, recaptchaToken } = body;
 
-    if (!name || !email || !message) {
+    if (!name || !email || !message || !recaptchaToken) {
       return new Response(
         JSON.stringify({ error: "Missing required fields" }),
         { status: 400, headers: { "Content-Type": "application/json" } },
       );
+    }
+
+    if (process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY) {
+      try {
+        const ip =
+          request.headers.get("cf-connecting-ip") ||
+          request.headers.get("x-forwarded-for") ||
+          "unknown";
+
+        const turnstileResponse = await fetch(
+          "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              secret: process.env.CLOUDFLARE_TURNSTILE_SECRET_KEY,
+              response: recaptchaToken,
+              remoteip: ip,
+            }),
+          },
+        );
+
+        const turnstileData = await turnstileResponse.json();
+
+        if (!turnstileData.success) {
+          return new Response(
+            JSON.stringify({ error: "Turnstile verification failed" }),
+            { status: 400, headers: { "Content-Type": "application/json" } },
+          );
+        }
+      } catch (turnstileError) {
+        console.error("Turnstile verification error:", turnstileError);
+        return new Response(
+          JSON.stringify({ error: "Turnstile verification error" }),
+          { status: 500, headers: { "Content-Type": "application/json" } },
+        );
+      }
     }
 
     name = String(name).trim();
@@ -112,23 +146,6 @@ export async function POST(request: Request) {
         });
       } catch (emailError) {
         console.error("Failed to send admin email:", emailError);
-      }
-    }
-
-    // Send auto-reply to visitor
-    if (process.env.RESEND_API_KEY) {
-      try {
-        await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL!,
-          to: email,
-          subject: "Thanks for reaching out",
-          html: getUserReplyEmail({
-            name: sanitizeHtml(name),
-            message: sanitizeHtml(message).replace(/\n/g, "<br>"),
-          }),
-        });
-      } catch (emailError) {
-        console.error("Failed to send auto-reply:", emailError);
       }
     }
 
