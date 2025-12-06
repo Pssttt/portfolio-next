@@ -249,5 +249,80 @@ body {
 
   html {
     scroll-behavior: smooth;
+    cursor: none;
+  }
+
+  a,
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"] {
+    cursor: none;
+  }
+
+  /* Terminal-styled cursor - main dot */
+  #cursor-dot {
+    --cursor-color: #89dceb;
+    --cursor-size: 8px;
+    
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    background: var(--cursor-color);
+    border: 1px solid var(--cursor-color);
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.1s ease, height 0.1s ease, background 0.1s ease, box-shadow 0.1s ease;
+    box-shadow: 0 0 4px rgba(137, 220, 235, 0.3);
+  }
+
+  #cursor-dot.cursor-hover {
+    --cursor-size: 12px;
+    box-shadow: 0 0 8px rgba(137, 220, 235, 0.5);
+  }
+
+  #cursor-dot.cursor-click {
+    --cursor-size: 6px;
+    box-shadow: 0 0 12px rgba(137, 220, 235, 0.7);
+  }
+
+  /* Terminal-styled cursor ring/border */
+  #cursor-ring {
+    --ring-size: 24px;
+    --ring-color: rgba(137, 220, 235, 0.3);
+    
+    width: var(--ring-size);
+    height: var(--ring-size);
+    border: 1px solid var(--ring-color);
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.15s ease;
+    opacity: 0;
+  }
+
+  #cursor-ring.cursor-hover {
+    --ring-color: rgba(137, 220, 235, 0.6);
+    opacity: 1;
+    --ring-size: 28px;
+  }
+
+  #cursor-ring.cursor-click {
+    --ring-color: rgba(137, 220, 235, 0.8);
+    opacity: 0.5;
+    --ring-size: 20px;
+  }
+
+  /* Hide custom cursor on mobile/touch */
+  @media (hover: none) and (pointer: coarse) {
+    * {
+      cursor: auto !important;
+    }
+    #custom-cursor,
+    #custom-cursor-ring {
+      display: none !important;
+    }
   }
 }
