@@ -1,5 +1,7 @@
 import { getAllBlogPosts, getAdjacentPostsData } from "@/lib/blogs";
 import { TableOfContents } from "@/components/blog/TableOfContents";
+import { ShareLinks } from "@/components/blog/ShareLinks";
+import { calculateReadingTime } from "@/lib/reading-time";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -72,13 +74,20 @@ export default async function BlogPage({
               <h1 className="text-3xl sm:text-4xl font-bold text-cat-sapphire">
                 {post.title}
               </h1>
-              <time className="text-sm text-muted-foreground">
-                {new Date(post.date).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
+              <div className="flex flex-col gap-3">
+                <time className="text-sm text-muted-foreground">
+                  {new Date(post.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+                <div className="flex items-center gap-3 text-sm text-muted-foreground flex-wrap">
+                  <span>{calculateReadingTime(post.content)} min read</span>
+                  <span>•</span>
+                  <ShareLinks title={post.title} slug={slug} />
+                </div>
+              </div>
             </div>
 
             <div className="prose prose-invert max-w-none [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mt-8 [&_h1]:mb-4 [&_h1]:text-foreground [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:text-foreground [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mt-6 [&_h3]:mb-3 [&_h3]:text-foreground [&_p]:text-muted-foreground [&_p]:my-4 [&_p]:leading-relaxed [&_ul]:space-y-2 [&_ul]:my-4 [&_ul]:list-disc [&_ul]:list-inside [&_ol]:space-y-2 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:list-inside [&_li]:text-muted-foreground [&_a]:text-cat-sky [&_a:hover]:underline [&_code]:text-cat-red [&_code]:bg-cat-surface0 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-sm [&_pre]:bg-cat-surface0 [&_pre]:border [&_pre]:border-primary/20 [&_pre]:rounded [&_pre]:p-4 [&_pre]:my-4 [&_pre]:overflow-x-auto [&_blockquote]:border-l-4 [&_blockquote]:border-primary/50 [&_blockquote]:pl-4 [&_blockquote]:my-4 [&_blockquote]:text-muted-foreground [&_blockquote]:italic [&_hr]:border-primary/30 [&_hr]:my-8 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded [&_img]:my-4 [&_.autolink-heading]:no-underline [&_.autolink-heading]:text-foreground">
