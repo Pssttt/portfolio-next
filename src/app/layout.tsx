@@ -52,6 +52,11 @@ export default function RootLayout({
     <html lang="en" className={hack.variable} suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#1e1e2e" />
+        <script
+          defer
+          src="https://analytics.psstee.dev/script.js"
+          data-website-id="97f72dc7-90e0-4336-94f3-b90be3ef6ac9"
+        />
       </head>
       <body className="antialiased">
         <Providers>
