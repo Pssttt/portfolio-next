@@ -325,4 +325,30 @@ body {
       display: none !important;
     }
   }
+
+  /* Code block copy button styles */
+  pre > [data-copy-button] {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-family: monospace;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background-color: var(--muted);
+    color: var(--foreground);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+    z-index: 10;
+  }
+
+  pre > [data-copy-button]:hover {
+    background-color: var(--secondary);
+  }
+
+  pre:hover > [data-copy-button] {
+    opacity: 1;
+  }
 }
