@@ -18,7 +18,6 @@ export function CodeBlockCopyButton() {
 
     const callback = () => {
       const codeBlocks = document.querySelectorAll("pre");
-      console.log("Found code blocks:", codeBlocks.length);
 
       codeBlocks.forEach((pre) => {
         if (pre.querySelector("[data-copy-button]")) return;
@@ -161,7 +160,6 @@ export function CodeBlockCopyButton() {
         });
 
         pre.appendChild(button);
-        console.log("Added button to pre");
       });
     };
 
