@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
+import { VimNavigationProvider } from "./VimNavigationProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -10,7 +11,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem
       themes={["light", "dark"]}
     >
-      {children}
+      <VimNavigationProvider>{children}</VimNavigationProvider>
     </ThemeProvider>
   );
 }
