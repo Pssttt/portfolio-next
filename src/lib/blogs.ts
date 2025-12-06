@@ -1,4 +1,4 @@
-'use server';
+"use server";
 
 import fs from "fs";
 import path from "path";
@@ -10,6 +10,7 @@ export interface BlogPostMetadata {
   date: string;
   excerpt: string;
   ogImage?: string;
+  content?: string;
 }
 
 const blogsDir = path.join(process.cwd(), "src/app/(main)/blogs/[slug]");
@@ -30,6 +31,7 @@ export async function getAllBlogPosts(): Promise<BlogPostMetadata[]> {
           date: data.date || "",
           excerpt: data.excerpt || "",
           ogImage: data.ogImage,
+          content: fileContent,
         };
       })
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
