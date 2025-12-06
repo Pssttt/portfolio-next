@@ -1,4 +1,5 @@
 import { Footer } from "@/components/contact/Footer";
+import { ContactForm } from "@/components/ContactForm";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -21,8 +22,14 @@ export default function ContactPage() {
       <div className="text-sm sm:text-base text-foreground mb-6 sm:mb-8 font-medium font-mono">
         $ fastfetch
       </div>
-      <div className="min-h-[400px]">
-        <Footer />
+      <div className="min-h-[400px] space-y-12">
+        <div>
+          <Footer />
+        </div>
+        <div>
+          <h2 className="text-2xl font-bold mb-6">Send me a message</h2>
+          <ContactForm />
+        </div>
       </div>
     </>
   );
