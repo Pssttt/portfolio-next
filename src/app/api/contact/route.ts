@@ -137,6 +137,7 @@ export async function POST(request: Request) {
         await resend.emails.send({
           from: process.env.RESEND_FROM_EMAIL!,
           to: process.env.CONTACT_EMAIL,
+          replyTo: email,
           subject: `New message from ${sanitizeHtml(name)}`,
           html: getAdminNotificationEmail({
             name: sanitizeHtml(name),
