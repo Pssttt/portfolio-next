@@ -29,9 +29,9 @@ export function ShareLinks({ title, slug }: ShareLinksProps) {
         target="_blank"
         rel="noopener noreferrer"
         className="px-2 py-1 border border-muted-foreground/30 rounded text-muted-foreground transition-all hover:text-[#89dceb] hover:border-[#89dceb]"
-        title="Share on Twitter"
+        title="Share on X"
       >
-        twitter
+        X
       </a>
       <a
         href={`https://www.linkedin.com/shareArticle/?mini=true&url=${encodedUrl}&title=${encodedTitle}&summary=${encodeURIComponent(excerpt)}&source=psstee.dev`}
