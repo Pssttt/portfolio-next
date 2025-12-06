@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { getAllBlogPosts } from "@/lib/blogs";
 import type { Metadata } from "next";
+import { BlogSearch } from "@/components/blog-search";
+import { getAllBlogPosts } from "@/lib/blogs";
 
 export const metadata: Metadata = {
   title: "Blogs - Pyae Sone Shin Thant",
@@ -21,55 +21,19 @@ export default async function BlogsPage() {
   return (
     <>
       <div className="space-y-4">
-        <h1 className="text-2xl sm:text-3xl font-light text-foreground">
+        <div className="text-sm font-mono text-muted-foreground">
+          $ ls blogs/
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
           <span className="text-primary">[blogs]</span> My Writings
         </h1>
-        <p className="text-muted-foreground text-sm sm:text-base">
+        <p className="text-secondary max-w-2xl">
           Documenting my journey in backend development, DevOps, and
-          infrastructure.
+          infrastructure.{" "}
         </p>
       </div>
 
-      <div className="space-y-4 pt-4">
-        {posts.map((post, index) => (
-          <Link
-            key={post.slug}
-            href={`/blogs/${post.slug}`}
-            className="block border-2 border-primary/40 bg-card/40 rounded-lg px-6 py-5 hover:border-primary/80 hover:bg-card/70 hover:shadow-lg transition-all group"
-          >
-            <div className="space-y-2">
-              <span className="text-cat-sapphire text-sm font-mono font-semibold">
-                #{String(posts.length - index).padStart(2, "0")}
-              </span>
-              <h2 className="text-lg sm:text-xl text-foreground font-semibold group-hover:text-cat-sapphire transition-colors">
-                {post.title}
-              </h2>
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="text-cat-yellow">
-                  {new Date(post.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-              </div>
-              <p className="text-secondary text-sm leading-relaxed">
-                {post.excerpt}
-              </p>
-              <span className="text-cat-sky group-hover:text-cat-teal text-sm hover:underline inline-flex items-center gap-1 font-medium">
-                Read more →
-              </span>
-            </div>
-          </Link>
-        ))}
-      </div>
-
-      {posts.length === 0 && (
-        <div className="text-muted-foreground text-sm py-8">
-          <p>$ echo "No posts yet. Coming soon..."</p>
-          <p className="pt-2">No posts yet. Coming soon...</p>
-        </div>
-      )}
+      <BlogSearch initialPosts={posts} />
     </>
   );
 }
