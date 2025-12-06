@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Providers } from "@/components/Providers";
 import { CustomCursor } from "@/components/CustomCursor";
-import { CodeBlockCopyButton } from "@/components/CodeBlockCopyButton";
 import "./globals.css";
 
 const hack = localFont({
@@ -63,7 +62,6 @@ export default function RootLayout({
       <body className="antialiased">
         <Providers>
           <CustomCursor />
-          <CodeBlockCopyButton />
           <a
             href="#main-content"
             className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded focus:outline-none focus:ring-2 focus:ring-ring"

@@ -2,7 +2,6 @@
 
 import { useVimNavigation } from "@/hooks/useVimNavigation";
 import { ShortcutHelp } from "./ShortcutHelp";
-import { CodeBlockCopyButton } from "./CodeBlockCopyButton";
 
 export function VimNavigationProvider({
   children,
@@ -13,7 +12,6 @@ export function VimNavigationProvider({
   return (
     <>
       <ShortcutHelp />
-      <CodeBlockCopyButton />
       {children}
     </>
   );
