@@ -5,6 +5,7 @@ export interface Project {
   highlights: string[];
   metrics: string[];
   status?: string;
+  timeline?: string;
   repoUrl?: string;
   demoUrl?: string;
   slug?: string;
@@ -45,10 +46,69 @@ export const projects: Project[] = [
       "Development standards: error handling, routing patterns, PR workflows",
       "Professional tooling: ESLint, Prettier, Husky, lint-staged",
     ],
-    status: "In Progress",
+    status: "Completed",
+    timeline: "Aug 2025 – Dec 2025",
     repoUrl: "https://github.com/orgs/CSC290-2025/repositories?type=source",
     demoUrl: "https://smartcity.sit.kmutt.ac.th/",
     slug: "smart-city-hub",
+  },
+  {
+    title: "Student–Mentor Booking Platform (Freelance)",
+    description:
+      "Backend service for a one-on-one booking platform with session management (Private Repo)",
+    fullDescription:
+      "Built and maintained a backend service for a one-on-one booking platform, handling scheduling, availability validation, and session management. Designed for scalability and reliability with containerized deployments.",
+    challenge:
+      "Preventing double-bookings and ensuring reliable media uploads while managing secure session-based authentication for multiple user roles.",
+    solution:
+      "Implemented transactional workflows with Prisma to ensure data consistency, designed a scalable media upload flow using AWS S3 presigned URLs, and containerized services for consistent deployment.",
+    technologies: [
+      "NestJS",
+      "Prisma",
+      "Docker",
+      "AWS S3",
+      "CloudFront",
+      "PostgreSQL",
+    ],
+    metrics: [
+      "Prevented double-bookings via transactions",
+      "Scalable media uploads with S3/CloudFront",
+      "Containerized deployment",
+    ],
+    highlights: [
+      "Transactional workflows for scheduling integrity",
+      "AWS S3 presigned URLs for direct client uploads",
+      "Role-based access control and session management",
+    ],
+    status: "In Progress",
+    timeline: "Nov 2025 – Present",
+    slug: "mentor-booking",
+  },
+  {
+    title: "Automated Court Booking System",
+    description:
+      "Automated backend service for time-sensitive Google Form bookings",
+    fullDescription:
+      "Developed an automated backend service to submit time-sensitive Google Form bookings on behalf of users. Engineered for reliability with precise scheduling to handle strict timing windows.",
+    challenge:
+      "Handling strict timing windows for booking submissions and managing external request failures reliably.",
+    solution:
+      "Implemented precise scheduling and retry logic, containerized the application for predictable runtime behavior on Linux servers, and set up monitoring for execution reliability.",
+    technologies: ["Python", "FastAPI", "Docker", "Linux"],
+    metrics: [
+      "Precise scheduling logic",
+      "Automated failure handling",
+      "Consistent task completion",
+    ],
+    highlights: [
+      "Automated Google Form submission engine",
+      "Retry logic for network reliability",
+      "Containerized Linux deployment",
+    ],
+    status: "Completed",
+    timeline: "Jun 2025 – Jul 2025",
+    repoUrl: "https://github.com/Pssttt/court-booking",
+    slug: "court-booking",
   },
   {
     title: "CS First Date - Junior-Senior Pair Matching Platform",
@@ -108,7 +168,8 @@ export const projects: Project[] = [
       "JWT authentication with OTP verification via Nodemailer",
       "Image storage and optimization pipeline using Cloudinary",
     ],
-    repoUrl: "https://github.com/CSC105-2024/G15-stylofi-PreHack-2025",
+    timeline: "April 2025 – May 2025",
+    repoUrl: "https://github.com/Pssttt/stylofi",
     demoUrl: "https://stylofi.psstee.dev/",
     slug: "stylofi",
   },
@@ -137,6 +198,7 @@ export const projects: Project[] = [
       "Shared translation feature for collaborative learning",
       "Comprehensive history tracking for translations",
     ],
+    timeline: "May 2025 – June 2025",
     repoUrl: "https://github.com/Pssttt/huhoh",
     demoUrl: "https://huhoh.psstee.dev/",
     slug: "huhoh",
