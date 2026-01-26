@@ -8,14 +8,21 @@ export default function ProjectCard({ project }: { project: Project }) {
     <div className="border border-primary/20 rounded-lg p-6 sm:p-8 hover:border-primary/40 transition-all duration-300 h-full">
       <div className="space-y-6">
         <div className="space-y-4">
-          <div className="flex items-center gap-3 flex-wrap">
-            <h3 className="text-xl sm:text-2xl font-bold text-cat-sapphire">
-              {project.title}
-            </h3>
-            {project.status && (
-              <span className="px-2.5 py-1 text-xs font-medium bg-cat-yellow/20 text-cat-yellow border border-cat-yellow/40 rounded-full">
-                {project.status}
-              </span>
+          <div className="space-y-1">
+            <div className="flex items-center gap-3 flex-wrap">
+              <h3 className="text-xl sm:text-2xl font-bold text-cat-sapphire">
+                {project.title}
+              </h3>
+              {project.status && (
+                <span className="px-2.5 py-1 text-xs font-medium bg-cat-yellow/20 text-cat-yellow border border-cat-yellow/40 rounded-full">
+                  {project.status}
+                </span>
+              )}
+            </div>
+            {project.timeline && (
+              <p className="text-sm font-mono text-cat-mauve">
+                {project.timeline}
+              </p>
             )}
           </div>
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">

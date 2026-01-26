@@ -59,14 +59,21 @@ export default async function ProjectDetailPage({
 
         <div id="project-title" className="space-y-6">
           <div className="space-y-4">
-            <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-3xl sm:text-4xl font-bold text-cat-sapphire">
-                {project.title}
-              </h1>
-              {project.status && (
-                <span className="px-2.5 py-1 text-xs font-medium bg-cat-yellow/20 text-cat-yellow border border-cat-yellow/40 rounded-full">
-                  {project.status}
-                </span>
+            <div className="space-y-2">
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 className="text-3xl sm:text-4xl font-bold text-cat-sapphire">
+                  {project.title}
+                </h1>
+                {project.status && (
+                  <span className="px-2.5 py-1 text-xs font-medium bg-cat-yellow/20 text-cat-yellow border border-cat-yellow/40 rounded-full">
+                    {project.status}
+                  </span>
+                )}
+              </div>
+              {project.timeline && (
+                <p className="text-base font-mono text-cat-mauve">
+                  {project.timeline}
+                </p>
               )}
             </div>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
