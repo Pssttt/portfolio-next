@@ -34,7 +34,7 @@ export function CustomCursor() {
       });
     };
 
-    const handleMouseMove = (e: MouseEvent) => {
+    const handlePointerMove = (e: PointerEvent) => {
       pendingPosRef.current = { x: e.clientX, y: e.clientY };
       scheduleUpdate();
 
@@ -68,14 +68,24 @@ export function CustomCursor() {
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    const handleVisibilityChange = () => {
+      if (document.hidden) return;
+      setState("default");
+    };
+
+    window.addEventListener("pointermove", handlePointerMove as EventListener);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener(
+        "pointermove",
+        handlePointerMove as EventListener,
+      );
       window.removeEventListener("mousedown", handleMouseDown);
       window.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [state]);
