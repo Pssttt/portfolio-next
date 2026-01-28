@@ -1,4 +1,9 @@
+"use client";
+
+import { useResumeDownload } from "@/hooks/useResumeDownload";
+
 export function Footer() {
+  const { handleDownload } = useResumeDownload();
   const systemInfo = [
     { label: "name", value: "Pyae Sone Shin Thant", color: "text-cat-blue" },
     {
@@ -33,7 +38,7 @@ export function Footer() {
       label: "resume",
       value: "resume.pdf",
       color: "text-cat-sky",
-      link: "/resume.pdf",
+      isResume: true,
     },
   ];
 
@@ -81,6 +86,13 @@ export function Footer() {
                 >
                   {info.value}
                 </a>
+              ) : info.isResume ? (
+                <button
+                  onClick={handleDownload}
+                  className={`${info.color} hover:underline transition-colors break-words cursor-pointer bg-none border-none p-0 font-inherit`}
+                >
+                  {info.value}
+                </button>
               ) : (
                 <span className={`${info.color} break-words`}>{info.value}</span>
               )}

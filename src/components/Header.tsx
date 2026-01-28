@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { ThemeToggle } from "./theme/ThemeToggle";
+import { useResumeDownload } from "@/hooks/useResumeDownload";
 
 export function Header() {
   const [displayedName, setDisplayedName] = useState("");
   const fullName = "Pyae Sone Shin Thant";
   const [isTypingComplete, setIsTypingComplete] = useState(false);
+  const { handleDownload } = useResumeDownload();
 
   useEffect(() => {
     let currentIndex = 0;
@@ -41,16 +43,15 @@ export function Header() {
         Computer Science Student | Aspiring DevOps Engineer
       </p>
 
-      <div className="flex flex-wrap gap-3 pt-2">
-        <a
-          href="/resume.pdf"
-          download
-          className="px-4 sm:px-6 py-2 sm:py-3 border-2 border-primary hover:bg-primary/20 transition-all text-foreground font-medium text-sm sm:text-base inline-flex items-center gap-2"
+            <div className="flex flex-wrap gap-3 pt-2">
+        <button
+          onClick={handleDownload}
+          className="px-4 sm:px-6 py-2 sm:py-3 border-2 border-primary hover:bg-primary/20 transition-all text-foreground font-medium text-sm sm:text-base inline-flex items-center gap-2 cursor-pointer"
           aria-label="Download resume PDF"
         >
           <span className="font-mono text-primary">[↓]</span>
           <span>Download Resume</span>
-        </a>
+        </button>
         <a
           href="mailto:me@psstee.dev"
           className="px-4 sm:px-6 py-2 sm:py-3 border-2 border-[#89dceb] hover:bg-[#89dceb]/20 transition-all text-foreground font-medium text-sm sm:text-base inline-flex items-center gap-2"
