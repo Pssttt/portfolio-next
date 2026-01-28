@@ -40,7 +40,7 @@ A modern, performant portfolio website built with Next.js 16, React 19, and Type
 ```bash
 # Clone repository
 git clone https://github.com/Pssttt/portfolio-next
-cd portfolio-next/portfolio
+cd portfolio-next
 
 # Install dependencies
 pnpm install
