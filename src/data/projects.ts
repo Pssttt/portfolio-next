@@ -108,6 +108,7 @@ export const projects: Project[] = [
     status: "Completed",
     timeline: "Jun 2025 – Jul 2025",
     repoUrl: "https://github.com/Pssttt/court-booking",
+    demoUrl: "https://booking.psstee.dev",
     slug: "court-booking",
   },
   {
