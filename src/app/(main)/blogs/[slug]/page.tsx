@@ -1,6 +1,7 @@
 import { getAllBlogPosts, getAdjacentPostsData } from "@/lib/blogs";
 import { TableOfContents } from "@/components/blog/TableOfContents";
 import { ShareLinks } from "@/components/blog/ShareLinks";
+import { Comments } from "@/components/blog/Comments";
 import { calculateReadingTime } from "@/lib/reading-time";
 import Link from "next/link";
 import type { Metadata } from "next";
@@ -164,6 +165,10 @@ export default async function BlogPage({
           ) : null}
         </div>
       )}
+
+      <div className="max-w-4xl">
+        <Comments />
+      </div>
     </div>
   );
 }
