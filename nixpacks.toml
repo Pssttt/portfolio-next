@@ -1,0 +1,9 @@
+[phases.install]
+dependsOn = ["setup"]
+
+[phases.build]
+dependsOn = ["install"]
+cmds = ["pnpm build"]
+
+[phases.start]
+cmd = "pnpm start"
