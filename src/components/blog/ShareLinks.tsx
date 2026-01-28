@@ -8,7 +8,7 @@ interface ShareLinksProps {
 }
 
 export function ShareLinks({ title, slug }: ShareLinksProps) {
-  const url = `https://psstee.dev${slug}`;
+  const url = `https://psstee.dev/blogs/${slug}`;
   const [copied, setCopied] = useState(false);
 
   const encodedUrl = encodeURIComponent(url);
@@ -43,6 +43,7 @@ export function ShareLinks({ title, slug }: ShareLinksProps) {
         linkedin
       </a>
       <button
+        type="button"
         onClick={handleCopy}
         className={`px-2 py-1 border rounded transition-all cursor-pointer w-12 flex items-center justify-center ${
           copied
