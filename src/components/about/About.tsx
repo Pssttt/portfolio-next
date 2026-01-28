@@ -50,6 +50,7 @@ const sections: Section[] = [
     title: "Achievements",
     color: "text-cat-sapphire",
     items: [
+      "1st Runner Up - IOT 2026 KMUTT Hackathon: Developed an NFC-based attendance tracking system with integrated IoT hardware and a full-stack management platform.",
       "2nd Runner Up - Hack Hed Dee Hackathon (2025) for Thai Sign Language Translation App",
     ],
   },
