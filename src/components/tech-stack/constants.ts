@@ -7,7 +7,7 @@ export const TECH_STACK = [
   {
     category: "Backend",
     color: "text-cat-peach",
-    items: ["Node.js", "Hono", "Express", "REST API", "Swagger"],
+    items: ["Node.js", "NestJS", "Hono", "Express", "REST API", "Swagger"],
   },
   {
     category: "Databases",
@@ -49,3 +49,7 @@ export const EXPERTISE = [
   "Performance Optimization",
   "Monitoring & Observability",
 ];
+
+export const PREFERRED_STACK = ["NestJS", "PostgreSQL", "Prisma", "Docker"];
+
+export const EXPLORING_STACK = ["Kubernetes", "Terraform", "Ansible", "Go"];

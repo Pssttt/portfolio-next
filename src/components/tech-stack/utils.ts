@@ -9,6 +9,7 @@ export function getTechIconUrl(techName: string): string {
 
     // Backend
     "Node.js": "node.js",
+    NestJS: "nestjs",
     Hono: "hono",
     Express: "express",
     "REST API": "swagger",
