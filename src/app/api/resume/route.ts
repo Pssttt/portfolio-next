@@ -60,21 +60,16 @@ export async function GET(request: Request) {
     // Write updated data
     await fs.writeFile(DOWNLOADS_FILE, JSON.stringify(downloads, null, 2));
 
-    // Redirect to PDF
-    return new Response(null, {
-      status: 302,
-      headers: {
-        Location: "/resume.pdf",
-      },
+    // Return success response instead of redirect
+    return new Response(JSON.stringify({ success: true }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
     console.error("Error tracking resume download:", error);
-    // Still redirect to PDF even if tracking fails
-    return new Response(null, {
-      status: 302,
-      headers: {
-        Location: "/resume.pdf",
-      },
+    return new Response(JSON.stringify({ success: false }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
     });
   }
 }
