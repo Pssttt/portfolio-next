@@ -355,6 +355,17 @@ body {
     }
   }
 
+  /* Hide custom cursor when hovering giscus comments */
+  body.giscus-hover #cursor-dot,
+  body.giscus-hover #cursor-ring {
+    opacity: 0 !important;
+  }
+
+  body.giscus-hover,
+  body.giscus-hover * {
+    cursor: auto !important;
+  }
+
   /* Hide custom cursor on mobile/touch */
   @media (hover: none) and (pointer: coarse) {
     * {

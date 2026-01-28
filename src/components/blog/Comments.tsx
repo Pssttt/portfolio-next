@@ -7,7 +7,11 @@ export function Comments() {
   const { theme } = useTheme();
 
   return (
-    <div className="mt-16 pt-8 border-t border-primary/30">
+    <div
+      className="mt-16 pt-8 border-t border-primary/30"
+      onMouseEnter={() => document.body.classList.add("giscus-hover")}
+      onMouseLeave={() => document.body.classList.remove("giscus-hover")}
+    >
       <Giscus
         id="comments"
         repo="Pssttt/portfolio-next"
@@ -26,4 +30,3 @@ export function Comments() {
     </div>
   );
 }
-
