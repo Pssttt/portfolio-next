@@ -88,7 +88,7 @@ export function CustomCursor() {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [state]);
+  }, []);
 
   if (!isDesktop) return null;
 
