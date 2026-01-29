@@ -9,7 +9,11 @@ interface Download {
   ip: string;
 }
 
-const DOWNLOADS_FILE = path.join(process.cwd(), "data", "resume-downloads.json");
+const DOWNLOADS_FILE = path.join(
+  process.cwd(),
+  "data",
+  "resume-downloads.json",
+);
 
 async function ensureDownloadsFile() {
   try {
@@ -21,6 +25,11 @@ async function ensureDownloadsFile() {
 }
 
 function getClientIp(headersList: Awaited<ReturnType<typeof headers>>): string {
+  const cfConnectingIp = headersList.get("cf-connecting-ip");
+  if (cfConnectingIp) {
+    return cfConnectingIp;
+  }
+
   const forwardedFor = headersList.get("x-forwarded-for");
   const realIp = headersList.get("x-real-ip");
 
