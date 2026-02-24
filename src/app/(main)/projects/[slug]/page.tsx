@@ -31,6 +31,12 @@ export async function generateMetadata({
     description: project.fullDescription || project.description,
     keywords: [...project.technologies, project.title],
     authors: [{ name: "Pyae Sone Shin Thant" }],
+    twitter: {
+      card: "summary",
+      title: project.title,
+      description: project.fullDescription || project.description,
+      creator: "@pssteee",
+    },
   };
 }
 

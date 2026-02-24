@@ -37,6 +37,13 @@ export async function generateMetadata({
       description: post.excerpt,
       images: [{ url: `/blogs/${slug}/opengraph-image` }],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: [`/blogs/${slug}/opengraph-image`],
+      creator: "@pssteee",
+    },
   };
 }
 

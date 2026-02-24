@@ -33,6 +33,13 @@ export const metadata: Metadata = {
     "React",
     "Node.js",
   ],
+  twitter: {
+    card: "summary_large_image",
+    title: "Pyae Sone Shin Thant - Computer Science Student & Backend Developer",
+    description:
+      "CS student passionate about DevOps and Backend Development. Experience with React, Node.js, Hono, PostgreSQL, and cloud infrastructure.",
+    creator: "@pssteee",
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
