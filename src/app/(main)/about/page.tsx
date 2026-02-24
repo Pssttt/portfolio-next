@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { About } from "@/components/about/About";
+import { GitHubStarField } from "@/components/about/GitHubStarField";
 
 export const metadata: Metadata = {
   title: "About - Pyae Sone Shin Thant",
@@ -23,6 +24,7 @@ export default function AboutPage() {
       </div>
       <div className="min-h-[400px]">
         <About />
+        <GitHubStarField />
       </div>
     </>
   );

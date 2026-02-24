@@ -36,6 +36,25 @@
     --sidebar-border: #45475a; /* surface1 */
     --sidebar-ring: #89b4fa; /* blue */
 
+    /* GitHub contribution graph levels */
+    --contrib-0: var(--color-surface0);
+    --contrib-1: color-mix(
+      in srgb,
+      var(--color-green) 25%,
+      var(--color-surface0)
+    );
+    --contrib-2: color-mix(
+      in srgb,
+      var(--color-green) 50%,
+      var(--color-surface0)
+    );
+    --contrib-3: color-mix(
+      in srgb,
+      var(--color-green) 75%,
+      var(--color-surface0)
+    );
+    --contrib-4: var(--color-green);
+
     /* Custom colors for content */
     --text-secondary: #bac2de; /* subtext1 */
     --color-red: #f38ba8;
