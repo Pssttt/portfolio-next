@@ -9,6 +9,7 @@ export interface BlogPostMetadata {
   title: string;
   date: string;
   excerpt: string;
+  tags?: string[];
   ogImage?: string;
   content?: string;
 }
@@ -30,6 +31,7 @@ export async function getAllBlogPosts(): Promise<BlogPostMetadata[]> {
           title: data.title || "",
           date: data.date || "",
           excerpt: data.excerpt || "",
+          tags: Array.isArray(data.tags) ? data.tags : [],
           ogImage: data.ogImage,
           content: fileContent,
         };

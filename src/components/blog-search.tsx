@@ -10,21 +10,42 @@ export function BlogSearch({
   initialPosts: BlogPostMetadata[];
 }) {
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  const allTags = useMemo(() => {
+    const tagSet = new Set<string>();
+    for (const post of initialPosts) {
+      for (const tag of post.tags ?? []) {
+        tagSet.add(tag);
+      }
+    }
+    return Array.from(tagSet).sort();
+  }, [initialPosts]);
 
   const filteredPosts = useMemo(() => {
-    if (!searchQuery.trim()) return initialPosts;
+    let posts = initialPosts;
 
-    const query = searchQuery.toLowerCase();
-    return initialPosts.filter((post) => {
-      const titleMatch = post.title.toLowerCase().includes(query);
-      const excerptMatch = post.excerpt.toLowerCase().includes(query);
-      return titleMatch || excerptMatch;
-    });
-  }, [searchQuery, initialPosts]);
+    if (activeTag) {
+      posts = posts.filter((post) => post.tags?.includes(activeTag));
+    }
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      posts = posts.filter((post) => {
+        const titleMatch = post.title.toLowerCase().includes(query);
+        const excerptMatch = post.excerpt.toLowerCase().includes(query);
+        return titleMatch || excerptMatch;
+      });
+    }
+
+    return posts;
+  }, [searchQuery, activeTag, initialPosts]);
+
+  const isFiltering = searchQuery.trim() || activeTag;
 
   return (
     <>
-      <div className="pt-6 pb-4">
+      <div className="pt-6 pb-4 space-y-4">
         <input
           type="text"
           placeholder="Search posts... (title, content)"
@@ -32,12 +53,35 @@ export function BlogSearch({
           onChange={(e) => setSearchQuery(e.target.value)}
           className="w-full max-w-md px-4 py-2 rounded-lg border-2 border-primary/40 bg-card/40 text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary/80 focus:bg-card/70 transition-all"
         />
-        {searchQuery && (
-          <p className="text-xs text-muted-foreground mt-2">
-            Found {filteredPosts.length} result
-            {filteredPosts.length !== 1 ? "s" : ""}
-          </p>
+
+        {allTags.length > 0 && (
+          <div className="flex flex-wrap gap-2" aria-label="Filter by tag">
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                className={`px-3 py-1 text-xs font-mono rounded border transition-all ${
+                  activeTag === tag
+                    ? "border-primary bg-primary/20 text-primary"
+                    : "border-primary/30 bg-card/40 text-muted-foreground hover:border-primary/60 hover:text-foreground"
+                }`}
+                aria-pressed={activeTag === tag}
+              >
+                #{tag}
+              </button>
+            ))}
+          </div>
         )}
+
+        <p
+          className="text-xs text-muted-foreground"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {isFiltering
+            ? `Found ${filteredPosts.length} result${filteredPosts.length !== 1 ? "s" : ""}`
+            : ""}
+        </p>
       </div>
 
       <div className="space-y-4">
@@ -54,7 +98,7 @@ export function BlogSearch({
               <h2 className="text-lg sm:text-xl text-foreground font-semibold group-hover:text-cat-sapphire transition-colors">
                 {post.title}
               </h2>
-              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+              <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
                 <span className="text-cat-yellow">
                   {new Date(post.date).toLocaleDateString("en-US", {
                     year: "numeric",
@@ -62,6 +106,18 @@ export function BlogSearch({
                     day: "numeric",
                   })}
                 </span>
+                {post.tags && post.tags.length > 0 && (
+                  <div className="flex gap-1.5 flex-wrap">
+                    {post.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2 py-0.5 font-mono text-cat-mauve bg-cat-surface0 border border-cat-surface1 rounded"
+                      >
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
               <p className="text-secondary text-sm leading-relaxed">
                 {post.excerpt}
@@ -74,14 +130,14 @@ export function BlogSearch({
         ))}
       </div>
 
-      {filteredPosts.length === 0 && searchQuery && (
+      {filteredPosts.length === 0 && isFiltering && (
         <div className="text-muted-foreground text-sm py-8">
-          <p>$ grep -r "{searchQuery}" posts/</p>
+          <p>$ grep -r "{searchQuery || `#${activeTag}`}" posts/</p>
           <p className="pt-2">No posts found matching your search.</p>
         </div>
       )}
 
-      {initialPosts.length === 0 && !searchQuery && (
+      {initialPosts.length === 0 && !isFiltering && (
         <div className="text-muted-foreground text-sm py-8">
           <p>$ echo "No posts yet. Coming soon..."</p>
           <p className="pt-2">No posts yet. Coming soon...</p>
