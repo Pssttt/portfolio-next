@@ -377,6 +377,26 @@ body {
     }
   }
 
+  /* Restore native cursor and disable animations for users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    html,
+    * {
+      cursor: auto !important;
+      scroll-behavior: auto !important;
+    }
+
+    #cursor-dot,
+    #cursor-ring {
+      display: none !important;
+    }
+
+    #cursor-dot,
+    #cursor-ring {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+
   /* Code block copy button styles */
   pre > [data-copy-button] {
     position: absolute;

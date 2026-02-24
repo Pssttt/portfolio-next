@@ -5,12 +5,18 @@ import { ThemeToggle } from "./theme/ThemeToggle";
 import { useResumeDownload } from "@/hooks/useResumeDownload";
 
 export function Header() {
-  const [displayedName, setDisplayedName] = useState("");
   const fullName = "Pyae Sone Shin Thant";
+  const [displayedName, setDisplayedName] = useState("");
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const { handleDownload } = useResumeDownload();
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplayedName(fullName);
+      setIsTypingComplete(true);
+      return;
+    }
+
     let currentIndex = 0;
     const typingInterval = setInterval(() => {
       if (currentIndex <= fullName.length) {

@@ -87,6 +87,9 @@ export default function Loading() {
           0%, 20%, 50%, 100% { opacity: 0.3; }
           40% { opacity: 1; }
         }
+        @media (prefers-reduced-motion: reduce) {
+          * { animation: none !important; }
+        }
       `}</style>
     </div>
   );

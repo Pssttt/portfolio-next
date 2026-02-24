@@ -12,6 +12,7 @@ export function CustomCursor() {
     "default",
   );
   const [isDesktop, setIsDesktop] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const pendingPosRef = useRef({ x: 0, y: 0 });
   const rafRef = useRef<number | undefined>(undefined);
 
@@ -19,10 +20,18 @@ export function CustomCursor() {
     const checkScreenSize = () => {
       setIsDesktop(window.matchMedia("(min-width: 1024px)").matches);
     };
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(motionQuery.matches);
+    const handleMotionChange = (e: MediaQueryListEvent) =>
+      setReducedMotion(e.matches);
 
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
-    return () => window.removeEventListener("resize", checkScreenSize);
+    motionQuery.addEventListener("change", handleMotionChange);
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+      motionQuery.removeEventListener("change", handleMotionChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -90,7 +99,7 @@ export function CustomCursor() {
     };
   }, []);
 
-  if (!isDesktop) return null;
+  if (!isDesktop || reducedMotion) return null;
 
   return (
     <>
