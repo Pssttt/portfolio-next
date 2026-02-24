@@ -113,7 +113,7 @@ export function Navigation() {
       )}
 
       {/* Desktop Navigation */}
-      <nav className="hidden md:flex border-b-2 border-primary bg-card w-full">
+      <nav className="hidden md:flex border-b-2 border-primary bg-card w-full items-center">
         {navItems.map((item) => {
           const isActive =
             pathname === item.path ||
@@ -150,6 +150,13 @@ export function Navigation() {
             </Link>
           );
         })}
+        <span
+          className="px-3 py-4 text-xs text-muted-foreground/50 whitespace-nowrap select-none hidden lg:flex items-center gap-1"
+          title="Press ? to see all keyboard shortcuts"
+        >
+          <kbd className="px-1.5 py-0.5 bg-muted border border-border rounded font-mono text-xs text-primary/60">?</kbd>
+          <span>shortcuts</span>
+        </span>
       </nav>
     </>
   );
