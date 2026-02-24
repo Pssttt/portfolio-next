@@ -142,17 +142,20 @@ export function ContactForm() {
         {status === "loading" ? "Sending..." : "Send Message"}
       </button>
 
-      {message && (
-        <div
-          className={`p-4 rounded text-sm ${
-            status === "success"
+      <div
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className={`p-4 rounded text-sm transition-all ${
+          message
+            ? status === "success"
               ? "bg-green-500/10 text-green-700 dark:text-green-400 border border-green-500/20"
               : "bg-red-500/10 text-red-700 dark:text-red-400 border border-red-500/20"
-          }`}
-        >
-          {message}
-        </div>
-      )}
+            : "sr-only"
+        }`}
+      >
+        {message}
+      </div>
     </form>
   );
 }
