@@ -1,9 +1,11 @@
+[phases.setup]
+nixPkgs = ["nodejs_22"]
+
 [phases.install]
-dependsOn = ["setup"]
+cmds = ["npm install -g pnpm@10.24.0", "pnpm install --frozen-lockfile"]
 
 [phases.build]
-dependsOn = ["install"]
 cmds = ["pnpm build"]
 
-[phases.start]
+[start]
 cmd = "pnpm start"
