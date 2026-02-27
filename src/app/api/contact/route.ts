@@ -13,7 +13,6 @@ interface ContactMessage {
 }
 
 const MESSAGES_FILE = path.join(process.cwd(), "data", "contact-messages.json");
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function ensureMessagesFile() {
   try {
@@ -134,6 +133,7 @@ export async function POST(request: Request) {
     // Send notification to admin
     if (process.env.RESEND_API_KEY && process.env.CONTACT_EMAIL) {
       try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
           from: process.env.RESEND_FROM_EMAIL!,
           to: process.env.CONTACT_EMAIL,
