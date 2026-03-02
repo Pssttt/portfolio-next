@@ -1,18 +1,10 @@
-const GITHUB_USERNAME = "Pssttt";
+"use client";
+
+import { useEffect, useState } from "react";
 
 const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
 const DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
@@ -58,52 +50,6 @@ function starColor(date: string) {
   return STAR_COLORS[hash % STAR_COLORS.length];
 }
 
-async function fetchContributions(): Promise<ContributionCalendar | null> {
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) return null;
-
-  try {
-    const res = await fetch("https://api.github.com/graphql", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: `{
-          user(login: "${GITHUB_USERNAME}") {
-            contributionsCollection {
-              contributionCalendar {
-                totalContributions
-                weeks {
-                  contributionDays {
-                    date
-                    contributionCount
-                  }
-                }
-              }
-            }
-          }
-        }`,
-      }),
-      next: { revalidate: 86400 },
-    });
-
-    if (!res.ok) {
-      console.error("[GitHubStarField] fetch failed:", res.status, await res.text());
-      return null;
-    }
-    const json = await res.json();
-    if (json.errors) console.error("[GitHubStarField] GraphQL errors:", JSON.stringify(json.errors));
-    return (
-      json.data?.user?.contributionsCollection?.contributionCalendar ?? null
-    );
-  } catch (e) {
-    console.error("[GitHubStarField] exception:", e);
-    return null;
-  }
-}
-
 function buildMonthLabels(weeks: Week[]) {
   const labels: { label: string; col: number }[] = [];
   weeks.forEach((week, weekIndex) => {
@@ -121,8 +67,16 @@ function buildMonthLabels(weeks: Week[]) {
   return labels;
 }
 
-export async function GitHubStarField() {
-  const calendar = await fetchContributions();
+export function GitHubStarField() {
+  const [calendar, setCalendar] = useState<ContributionCalendar | null>(null);
+
+  useEffect(() => {
+    fetch("/api/github-contributions")
+      .then((r) => r.json())
+      .then(setCalendar)
+      .catch(() => {});
+  }, []);
+
   if (!calendar) return null;
 
   const { totalContributions, weeks } = calendar;
