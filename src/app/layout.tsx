@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Providers } from "@/components/Providers";
 import { CustomCursor } from "@/components/CustomCursor";
+import { StatusLine } from "@/components/StatusLine";
 import "./globals.css";
 
 const hack = localFont({
@@ -76,6 +77,7 @@ export default function RootLayout({
             Skip to main content
           </a>
           {children}
+          <StatusLine />
         </Providers>
       </body>
     </html>
