@@ -89,12 +89,17 @@ async function fetchContributions(): Promise<ContributionCalendar | null> {
       next: { revalidate: 86400 },
     });
 
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error("[GitHubStarField] fetch failed:", res.status, await res.text());
+      return null;
+    }
     const json = await res.json();
+    if (json.errors) console.error("[GitHubStarField] GraphQL errors:", JSON.stringify(json.errors));
     return (
       json.data?.user?.contributionsCollection?.contributionCalendar ?? null
     );
-  } catch {
+  } catch (e) {
+    console.error("[GitHubStarField] exception:", e);
     return null;
   }
 }
