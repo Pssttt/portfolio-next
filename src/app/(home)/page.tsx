@@ -43,7 +43,7 @@ export default function Home() {
               </Link>
               <Link
                 href="/contact"
-                className="px-8 py-3 border-2 border-[#89dceb] text-foreground font-medium rounded-lg hover:bg-[#89dceb]/10 transition-colors text-center"
+                className="px-8 py-3 border-2 border-cat-sky text-foreground font-medium rounded-lg hover:bg-cat-sky/10 transition-colors text-center"
               >
                 Get in Touch
               </Link>
