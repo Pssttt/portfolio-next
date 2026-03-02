@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 const GITHUB_USERNAME = "Pssttt";
 
-export const revalidate = 86400;
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const token = process.env.GITHUB_TOKEN;
