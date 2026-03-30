@@ -26,15 +26,22 @@ export async function generateMetadata({
     };
   }
 
+  const description = (project.fullDescription || project.description).slice(0, 160)
+
   return {
     title: project.title,
-    description: project.fullDescription || project.description,
+    description,
     keywords: [...project.technologies, project.title],
     authors: [{ name: "Pyae Sone Shin Thant" }],
-    twitter: {
-      card: "summary",
+    openGraph: {
       title: project.title,
-      description: project.fullDescription || project.description,
+      description,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.title,
+      description,
       creator: "@pssteee",
     },
   };
