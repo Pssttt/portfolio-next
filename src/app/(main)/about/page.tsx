@@ -5,14 +5,16 @@ import { GitHubStarField } from "@/components/about/GitHubStarField";
 export const metadata: Metadata = {
   title: "About - Pyae Sone Shin Thant",
   description:
-    "Computer Science student at KMUTT, passionate about DevOps and Backend Development. Currently serving as Dev Lead for a 50+ developer integrated project.",
+    "CS student & DevOps Engineer Intern at social.plus. Passionate about backend development, cloud infrastructure, and CI/CD pipelines.",
   authors: [{ name: "Pyae Sone Shin Thant" }],
   keywords: [
     "DevOps",
     "Backend Development",
-    "Dev Lead",
+    "social.plus",
     "Computer Science",
     "Infrastructure",
+    "Docker",
+    "AWS",
   ],
 };
 

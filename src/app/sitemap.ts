@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { getAllBlogPosts } from "@/lib/blogs";
+import { projects } from "@/data/projects";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://psstee.dev";
@@ -11,6 +12,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "weekly" as const,
     priority: 0.8,
   }));
+
+  const projectEntries: MetadataRoute.Sitemap = projects
+    .filter((p) => p.slug)
+    .map((project) => ({
+      url: `${baseUrl}/projects/${project.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    }));
 
   return [
     {
@@ -49,6 +59,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
+    ...projectEntries,
     ...blogEntries,
   ];
 }

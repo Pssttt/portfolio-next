@@ -6,6 +6,13 @@ interface Section {
 
 const sections: Section[] = [
   {
+    title: "Work Experience",
+    color: "text-cat-green",
+    items: [
+      "DevOps Engineer Intern @ social.plus — Working on infrastructure, CI/CD pipelines, and cloud operations (Mar 2026 – Present)",
+    ],
+  },
+  {
     title: "Areas of Focus",
     color: "text-cat-red",
     items: [
@@ -41,7 +48,6 @@ const sections: Section[] = [
     title: "Current Goals",
     color: "text-cat-green",
     items: [
-      "Seeking internship or entry-level opportunities in DevOps/Backend roles",
       "Building production-ready projects to improve practical skills",
       "Contributing to open-source projects",
     ],
@@ -96,16 +102,22 @@ export function About() {
       {/* Intro */}
       <div className="space-y-3 text-base leading-relaxed">
         <p className="text-foreground text-lg">
-          Computer Science Student with a strong passion for DevOps Engineering
-          and Backend Development.
+          Computer Science Student & DevOps Engineer Intern at{" "}
+          <a
+            href="https://social.plus"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-cat-sky hover:text-cat-sapphire underline transition-colors"
+          >
+            social.plus
+          </a>
+          , passionate about DevOps Engineering and Backend Development.
         </p>
         <p className="text-secondary">
-          <span className="text-primary">&gt;</span> Currently pursuing my
-          degree while actively building skills in containerization, cloud
-          infrastructure, and CI/CD pipelines. Passionate about automating
-          workflows, optimizing system performance, and creating scalable
-          backend solutions.
-        </p>
+          <span className="text-primary">&gt;</span> Currently working as a
+          DevOps Engineer Intern at social.plus while pursuing my CS degree.
+          Building hands-on experience in containerization, cloud
+          infrastructure, and CI/CD pipelines.</p>
         <p className="text-secondary">
           <span className="text-primary">&gt;</span> Serving as Dev Lead and
           Co-Infrastructure Lead for a university integrated project with 50+

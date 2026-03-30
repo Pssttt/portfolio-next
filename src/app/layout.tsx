@@ -23,9 +23,9 @@ const hack = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://psstee.dev"),
-  title: "Pyae Sone Shin Thant - Computer Science Student & Backend Developer",
+  title: "Pyae Sone Shin Thant - DevOps Engineer Intern & Backend Developer",
   description:
-    "CS student passionate about DevOps and Backend Development. Experience with React, Node.js, Hono, PostgreSQL, and cloud infrastructure.",
+    "CS student & DevOps Engineer Intern at social.plus. Passionate about backend development, cloud infrastructure, and CI/CD. Experience with React, Node.js, NestJS, PostgreSQL, Docker, and AWS.",
   authors: [{ name: "Pyae Sone Shin Thant" }],
   keywords: [
     "Backend Developer",
@@ -33,13 +33,25 @@ export const metadata: Metadata = {
     "Computer Science",
     "React",
     "Node.js",
+    "Docker",
+    "AWS",
+    "social.plus",
   ],
+  openGraph: {
+    title: "Pyae Sone Shin Thant - DevOps Engineer Intern & Backend Developer",
+    description:
+      "CS student & DevOps Engineer Intern at social.plus. Passionate about backend development, cloud infrastructure, and CI/CD.",
+    type: "website",
+    url: "https://psstee.dev",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Pyae Sone Shin Thant" }],
+  },
   twitter: {
     card: "summary_large_image",
-    title: "Pyae Sone Shin Thant - Computer Science Student & Backend Developer",
+    title: "Pyae Sone Shin Thant - DevOps Engineer Intern & Backend Developer",
     description:
-      "CS student passionate about DevOps and Backend Development. Experience with React, Node.js, Hono, PostgreSQL, and cloud infrastructure.",
+      "CS student & DevOps Engineer Intern at social.plus. Passionate about backend development, cloud infrastructure, and CI/CD.",
     creator: "@pssteee",
+    images: ["/og-image.png"],
   },
   icons: {
     icon: [
@@ -66,7 +78,7 @@ export default function RootLayout({
       "https://github.com/Pssttt",
       "https://twitter.com/pssteee",
     ],
-    jobTitle: "Computer Science Student & Backend Developer",
+    jobTitle: "DevOps Engineer Intern & Backend Developer",
     description:
       "CS student passionate about DevOps and Backend Development. Experience with React, Node.js, Hono, PostgreSQL, and cloud infrastructure.",
     knowsAbout: [
