@@ -16,6 +16,48 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Unishare - Student Resource Sharing Platform",
+    description:
+      "Full-stack platform for university students to share lecture notes, past papers, and study guides",
+    fullDescription:
+      "A monorepo platform built for university students to upload, discover, and share academic resources across courses and departments. Features a NestJS REST API, Next.js frontend, real-time chat, collaborative canvas, and AI-powered document summarization — all deployed via Docker and GitHub Actions CI/CD.",
+    challenge:
+      "Building a scalable, full-stack platform from scratch that handles file uploads, real-time features, and AI integration while maintaining clean architecture and a great developer experience across a monorepo.",
+    solution:
+      "Adopted a Turborepo monorepo with NestJS + Prisma backend and Next.js frontend, implemented OpenAPI-first development with Orval for type-safe API clients, added real-time chat via Socket.IO, integrated AI summarization, and automated deployment with Docker and GitHub Actions.",
+    technologies: [
+      "Next.js",
+      "NestJS",
+      "Prisma",
+      "PostgreSQL",
+      "Redis",
+      "Socket.IO",
+      "Docker",
+      "Turborepo",
+      "TypeScript",
+      "TanStack Query",
+    ],
+    metrics: [
+      "Full monorepo with shared packages",
+      "OpenAPI-first with auto-generated type-safe client",
+      "Real-time chat and collaborative canvas",
+      "AI-powered document summarization",
+      "Automated CI/CD with GitHub Actions",
+    ],
+    highlights: [
+      "NestJS REST API with Prisma ORM and PostgreSQL full-text search",
+      "Real-time features: chat (Socket.IO) and collaborative canvas (Excalidraw)",
+      "OpenAPI spec with Orval code generation for type-safe frontend API calls",
+      "AI document summarization and Open Graph / SEO optimization",
+      "Dockerized deployment with GitHub Actions CI/CD pipeline",
+    ],
+    status: "In Progress",
+    timeline: "Jan 2026 – Present",
+    repoUrl: "https://github.com/unishare-oss/unishare",
+    demoUrl: "https://share.psstee.dev",
+    slug: "unishare",
+  },
+  {
     title: "Smart City Hub - University Integrated Project (Dev Lead)",
     description:
       "Smart city platform with OpenAPI-first architecture and enterprise standards",

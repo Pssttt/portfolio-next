@@ -57,10 +57,36 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Pyae Sone Shin Thant",
+    url: "https://psstee.dev",
+    sameAs: [
+      "https://github.com/Pssttt",
+      "https://twitter.com/pssteee",
+    ],
+    jobTitle: "Computer Science Student & Backend Developer",
+    description:
+      "CS student passionate about DevOps and Backend Development. Experience with React, Node.js, Hono, PostgreSQL, and cloud infrastructure.",
+    knowsAbout: [
+      "Backend Development",
+      "DevOps",
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Docker",
+    ],
+  }
+
   return (
     <html lang="en" className={hack.variable} suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#1e1e2e" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <script
           defer
           src="https://analytics.psstee.dev/script.js"

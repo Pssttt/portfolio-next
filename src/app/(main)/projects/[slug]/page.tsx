@@ -52,8 +52,30 @@ export default async function ProjectDetailPage({
     notFound();
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: project.title,
+    description: project.fullDescription || project.description,
+    applicationCategory: "WebApplication",
+    operatingSystem: "Web",
+    author: {
+      "@type": "Person",
+      name: "Pyae Sone Shin Thant",
+      url: "https://psstee.dev",
+    },
+    ...(project.demoUrl && { url: project.demoUrl }),
+    ...(project.repoUrl && { codeRepository: project.repoUrl }),
+    ...(project.timeline && { datePublished: project.timeline.split("–")[0].trim() }),
+    programmingLanguage: project.technologies,
+  }
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <ScrollToTitle />
       <div className="space-y-8">
         <Link
