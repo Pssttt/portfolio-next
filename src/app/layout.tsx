@@ -43,7 +43,6 @@ export const metadata: Metadata = {
       "CS student & DevOps Engineer Intern at social.plus. Passionate about backend development, cloud infrastructure, and CI/CD.",
     type: "website",
     url: "https://psstee.dev",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Pyae Sone Shin Thant" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -51,7 +50,6 @@ export const metadata: Metadata = {
     description:
       "CS student & DevOps Engineer Intern at social.plus. Passionate about backend development, cloud infrastructure, and CI/CD.",
     creator: "@pssteee",
-    images: ["/og-image.png"],
   },
   icons: {
     icon: [
