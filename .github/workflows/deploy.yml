@@ -1,9 +1,5 @@
 name: Build & Push Docker Image
 
-# Adapted from lone-job's workflow (same GitOps write-back pattern, same
-# target cluster). No test job here: this repo has no typecheck/test scripts
-# to gate on, unlike lone-job's Chromium-dependent render path.
-
 on:
   push:
     branches: [main]
@@ -15,8 +11,6 @@ on:
         default: false
 
 env:
-  # Hardcoded lowercase, NOT ${{ github.repository_owner }}. GHCR rejects tags
-  # with uppercase characters and this account is `Pssttt`.
   OWNER: pssttt
   IMAGE: portfolio-next
 
@@ -27,10 +21,6 @@ jobs:
     outputs:
       present: ${{ steps.g.outputs.present }}
     steps:
-      # The `secrets` context is NOT available in a job-level `if:` -- GitHub
-      # rejects the whole workflow before any job starts if referenced there.
-      # It IS available inside a step, so the check happens here and `deploy`
-      # gates on this output.
       - id: g
         env:
           APP_ID: ${{ secrets.GITOPS_APP_ID }}
@@ -66,8 +56,6 @@ jobs:
           file: Dockerfile
           push: true
           no-cache: ${{ inputs.no_cache == true }}
-          # arm64 only: the cluster is OCI Ampere A1 (aarch64). Building on an
-          # arm64 runner avoids QEMU entirely.
           platforms: linux/arm64
           build-args: |
             NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY=${{ secrets.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY }}
@@ -80,16 +68,10 @@ jobs:
   deploy:
     name: Write image tag to GitOps repo
     needs: [gitops, build]
-    # Skip rather than fail when the GitOps App credentials are absent. The
-    # image is already built and pushed by this point, so a missing secret
-    # should leave the run green with an obvious skipped job, not a red X that
-    # looks like a broken build.
     if: needs.gitops.outputs.present == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    # Serialised because two concurrent runs would race on the same file in
-    # the GitOps repo; the loser's rebase-and-retry below handles the rest.
     concurrency:
       group: gitops-write-back-portfolio
       cancel-in-progress: false
@@ -100,9 +82,6 @@ jobs:
         with:
           app-id: ${{ secrets.GITOPS_APP_ID }}
           private-key: ${{ secrets.GITOPS_APP_PRIVATE_KEY }}
-          # Explicitly unishare-oss, not this repo's owner: the GitOps repo
-          # lives in the org while this repo is personal, and `owner` defaults
-          # to the current repository's owner.
           owner: unishare-oss
           repositories: k8s-practice
 
