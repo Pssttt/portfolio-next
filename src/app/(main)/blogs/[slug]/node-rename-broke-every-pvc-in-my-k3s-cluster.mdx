@@ -1,0 +1,156 @@
+---
+title: "How a Node Rename Broke Every PVC in My k3s Cluster"
+date: "2026-06-28"
+excerpt: "My homelab rebooted with a different node name. Every stateful pod went Pending, and fixing it meant deleting PersistentVolumes on purpose."
+tags: ["kubernetes", "devops", "homelab", "incident"]
+---
+
+# The Symptom
+
+I opened Grafana and got nothing. Which is funny, because Grafana is the thing that's supposed to tell me when something is down.
+
+So I went to the cluster directly:
+
+```
+NAME                          READY   STATUS             RESTARTS
+grafana-7d4b9c8f5-x2kqp       0/1     Pending            0
+prometheus-0                  0/2     Pending            0
+postgres-0                    0/1     Pending            0
+unishare-api-6b8d7f9c-4mnwl   0/1     CrashLoopBackOff   14
+```
+
+Everything stateless was fine. Everything with a volume was Pending. And the API was crashlooping because the database it depends on was one of the Pending ones.
+
+The single most useful line came from `kubectl describe`:
+
+```
+Warning  FailedScheduling  default-scheduler
+  0/2 nodes are available: 1 node(s) had volume node affinity conflict,
+  1 node(s) were unschedulable.
+```
+
+Two nodes. I have a single-node cluster.
+
+# The Actual Cause
+
+```
+$ kubectl get nodes
+NAME                STATUS     ROLES                  AGE     VERSION
+oci-basics-vnic     NotReady   control-plane,master   127d    v1.31.x
+oracle              Ready      control-plane,master   9m      v1.31.x
+```
+
+The box's hostname had changed. k3s derives its node name from the hostname, so on the next restart it didn't recognise itself — it registered as a brand new node called `oracle` and left the old `oci-basics-vnic` object sitting there as a tombstone.
+
+That alone is cosmetic. The damage was one layer down.
+
+My cluster uses `local-path` for storage, which is the default in k3s. It provisions volumes as directories on the node's own disk, which is completely reasonable for a single-node homelab and has one consequence I had never had to think about: **a `local-path` PersistentVolume is pinned to the node it was created on**, using node affinity written into the PV itself.
+
+```yaml
+spec:
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - oci-basics-vnic
+```
+
+Every PV in my cluster had that. So the scheduler was doing exactly what it was told: this volume lives on `oci-basics-vnic`, that node is NotReady, therefore no pod that mounts this volume can be scheduled anywhere. The one healthy node in the cluster wasn't eligible, because it had the wrong name.
+
+Nothing was corrupt. Nothing had been deleted. Every pod was simply waiting for a machine that no longer existed, on a disk that was physically two inches away.
+
+# Checking Whether the Data Was Still There
+
+Before touching anything I wanted to know what I was actually risking. `local-path` puts its volumes in a predictable place:
+
+```
+$ ls /var/lib/rancher/k3s/storage/
+pvc-3f1c...-postgres-data-postgres-0
+pvc-8a92...-prometheus-db-prometheus-0
+pvc-c04e...-grafana-pvc
+```
+
+All present, correct sizes, recent mtimes. The data had never gone anywhere — only the pointer to it was wrong.
+
+That reframed the whole problem. This wasn't a recovery, it was a rename. But it did come with a real trap attached, which is the part worth writing down.
+
+# The Trap
+
+The obvious move is "just patch the node name in the PV." That doesn't work: **`nodeAffinity` on a PV is immutable.** You can't edit it. The only way to change it is to delete the PV object and create a new one.
+
+And deleting a PV is exactly as alarming as it sounds, because `local-path` provisions with `persistentVolumeReclaimPolicy: Delete`. Deleting the PV in that state tells the provisioner to go and remove the directory on disk. That is the one action in this entire incident that would have actually destroyed data.
+
+The second trap is quieter. If you delete a PVC and recreate it from your manifests, the storage class will happily provision a **brand new empty volume** and bind to that instead. Your pod comes up green, your dashboard is blank, and it looks like it worked.
+
+So the order matters a lot.
+
+# The Fix
+
+**1. Stop the PVs from being able to delete anything.** Before any destructive step:
+
+```bash
+kubectl patch pv <pv-name> -p \
+  '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+```
+
+Now the PV object can be deleted and the directory on disk survives. I did this for every affected PV first, and verified it with `kubectl get pv -o custom-columns` before continuing.
+
+**2. Save the current definitions.**
+
+```bash
+kubectl get pv <pv-name> -o yaml > pv-<name>.yaml
+```
+
+**3. Delete the PVC, then the PV.** With `Retain` set, this leaves the data alone.
+
+**4. Rewrite the saved YAML.** Change the node name in `nodeAffinity`, and strip the fields that can't be re-applied — `claimRef`, `uid`, `resourceVersion`, `creationTimestamp`, and the whole `status` block. Leaving `claimRef` in place is what causes a recreated PV to come back as `Released` and refuse to bind to anything.
+
+```bash
+kubectl apply -f pv-<name>.yaml   # comes back Available
+```
+
+**5. Recreate the PVC pinned to that specific volume.** This is the step that avoids the empty-volume trap:
+
+```yaml
+spec:
+  volumeName: pvc-3f1c...    # bind to THIS pv, don't provision a new one
+```
+
+**6. Clean up the tombstone.**
+
+```bash
+kubectl delete node oci-basics-vnic
+```
+
+Some pods were left in `Terminating` because their node was gone and nothing was around to confirm they'd stopped. Those needed `--force --grace-period=0`.
+
+Postgres came up with its data. Prometheus came up with its history. Grafana came up with my dashboards.
+
+# The Part I Didn't Expect
+
+My cluster is managed by ArgoCD, with `selfHeal: true` and `prune: true` on everything. So after all of that, one app sat stubbornly `OutOfSync`.
+
+The reason is subtle and worth knowing if you run GitOps over stateful workloads.
+
+`volumeName` is not in my Git manifests — it can't be, because it references a volume ID that only exists at runtime. But I had just created the PVC by hand *with* `volumeName` set. `kubectl apply` records what you gave it in the `kubectl.kubernetes.io/last-applied-configuration` annotation, so the live object now claimed that `volumeName` was part of its desired state. ArgoCD compared that against Git, saw a field Git didn't have, and flagged a diff it could never resolve — `volumeName` is immutable on a bound PVC, so it couldn't remove it either.
+
+The fix was to rewrite that annotation to match what's actually in Git — the manifest fields only, no `volumeName` — leaving the live object untouched. ArgoCD went green and stayed green.
+
+The general lesson: when you repair a GitOps-managed resource by hand, you have to repair the *record of intent* as well as the resource. Otherwise the controller keeps fighting a version of reality you accidentally invented.
+
+# What I Actually Learned
+
+**Default storage classes encode assumptions you don't notice until they break.** `local-path` is the right choice for a single-node cluster right up until the identity of that single node changes. I'd read that it pins volumes to a node. I hadn't understood that the pin is a *string*, and that the string can go stale while the disk stays perfectly fine.
+
+**Node identity is infrastructure.** I had treated the hostname as cosmetic. It's a primary key. Anything that derives an identifier from the environment will silently re-register as something new when the environment shifts.
+
+**Reclaim policy is a seatbelt you fasten before the crash.** Setting `Retain` was thirty seconds of work and it's the only reason the rest of the incident was survivable. It's now the first thing I do on any PV I care about, rather than something I go looking for mid-outage.
+
+**"The pod is green" is not "the data is there."** The most dangerous version of this incident isn't the one I had. It's the one where I skip step 5, everything schedules cleanly, and I don't find out the volumes are empty until I go looking for last month's metrics.
+
+**GitOps recovers configuration, not state.** Git had every Deployment, every Service, every PVC. Git could not help me here at all, because the broken thing — a PV created at runtime by a provisioner, carrying a node name — was never in Git and never will be. Declarative infrastructure gets you back a running empty cluster very fast. Your data is a separate problem and needs a separate answer.
+
+The cluster's been stable since. The node is called `oracle` now, and I've written the name down.
