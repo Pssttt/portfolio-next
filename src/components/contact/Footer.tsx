@@ -18,9 +18,9 @@ export function Footer() {
     },
     {
       label: "email",
-      value: "me@psstee.dev",
+      value: "me@psstee.me",
       color: "text-cat-sky",
-      link: "mailto:me@psstee.dev",
+      link: "mailto:me@psstee.me",
     },
     {
       label: "github",

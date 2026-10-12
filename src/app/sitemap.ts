@@ -3,7 +3,7 @@ import { getAllBlogPosts } from "@/lib/blogs";
 import { projects } from "@/data/projects";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://psstee.dev";
+  const baseUrl = "https://psstee.me";
   const blogs = await getAllBlogPosts();
 
   const blogEntries: MetadataRoute.Sitemap = blogs.map((post) => ({

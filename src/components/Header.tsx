@@ -59,9 +59,9 @@ export function Header() {
           <span>Download Resume</span>
         </button>
         <a
-          href="mailto:me@psstee.dev"
+          href="mailto:me@psstee.me"
           className="px-4 sm:px-6 py-2 sm:py-3 border-2 border-[#89dceb] hover:bg-[#89dceb]/20 transition-all text-foreground font-medium text-sm sm:text-base inline-flex items-center gap-2"
-          aria-label="Send email to me@psstee.dev"
+          aria-label="Send email to me@psstee.me"
         >
           <span className="font-mono text-cat-sky">[@]</span>
           <span>Email Me</span>

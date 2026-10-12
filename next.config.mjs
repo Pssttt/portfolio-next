@@ -16,12 +16,12 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://analytics.psstee.dev",
+      "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com https://analytics.psstee.me",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https:",
       "font-src 'self'",
       "frame-src https://challenges.cloudflare.com https://giscus.app",
-      "connect-src 'self' https://analytics.psstee.dev https://api.github.com",
+      "connect-src 'self' https://analytics.psstee.me https://api.github.com",
     ].join("; "),
   },
 ];
