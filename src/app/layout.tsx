@@ -97,11 +97,6 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <script
-          defer
-          src="https://analytics.psstee.me/script.js"
-          data-website-id="97f72dc7-90e0-4336-94f3-b90be3ef6ac9"
-        />
       </head>
       <body className="antialiased">
         <Providers>
