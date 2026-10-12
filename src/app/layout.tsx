@@ -22,7 +22,7 @@ const hack = localFont({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://psstee.dev"),
+  metadataBase: new URL("https://psstee.me"),
   title: "Pyae Sone Shin Thant - DevOps Engineer Intern & Backend Developer",
   description:
     "CS student & DevOps Engineer Intern at social.plus. Passionate about backend development, cloud infrastructure, and CI/CD. Experience with React, Node.js, NestJS, PostgreSQL, Docker, and AWS.",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     description:
       "CS student & DevOps Engineer Intern at social.plus. Passionate about backend development, cloud infrastructure, and CI/CD.",
     type: "website",
-    url: "https://psstee.dev",
+    url: "https://psstee.me",
   },
   twitter: {
     card: "summary_large_image",
@@ -71,7 +71,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Person",
     name: "Pyae Sone Shin Thant",
-    url: "https://psstee.dev",
+    url: "https://psstee.me",
     sameAs: [
       "https://github.com/Pssttt",
       "https://twitter.com/pssteee",
@@ -96,11 +96,6 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <script
-          defer
-          src="https://analytics.psstee.dev/script.js"
-          data-website-id="97f72dc7-90e0-4336-94f3-b90be3ef6ac9"
         />
       </head>
       <body className="antialiased">

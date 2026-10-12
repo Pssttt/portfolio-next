@@ -69,7 +69,7 @@ export default async function ProjectDetailPage({
     author: {
       "@type": "Person",
       name: "Pyae Sone Shin Thant",
-      url: "https://psstee.dev",
+      url: "https://psstee.me",
     },
     ...(project.demoUrl && { url: project.demoUrl }),
     ...(project.repoUrl && { codeRepository: project.repoUrl }),

@@ -212,12 +212,12 @@ export function getUserReplyEmail({
           
           <div class="cta-section">
             <p>Want to continue the conversation? Visit my portfolio or reply directly to this email.</p>
-            <a href="https://psstee.dev" class="cta-button">visit portfolio</a>
+            <a href="https://psstee.me" class="cta-button">visit portfolio</a>
           </div>
         </div>
         <div class="footer">
           <div class="signature">Pyae Sone Shin Thant</div>
-          <div class="contact-email"><a href="mailto:me@psstee.dev">me@psstee.dev</a></div>
+          <div class="contact-email"><a href="mailto:me@psstee.me">me@psstee.me</a></div>
         </div>
       </div>
     </body>

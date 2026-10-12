@@ -8,7 +8,7 @@ interface ShareLinksProps {
 }
 
 export function ShareLinks({ title, slug }: ShareLinksProps) {
-  const url = `https://psstee.dev/blogs/${slug}`;
+  const url = `https://psstee.me/blogs/${slug}`;
   const [copied, setCopied] = useState(false);
 
   const encodedUrl = encodeURIComponent(url);
@@ -34,7 +34,7 @@ export function ShareLinks({ title, slug }: ShareLinksProps) {
         X
       </a>
       <a
-        href={`https://www.linkedin.com/shareArticle/?mini=true&url=${encodedUrl}&title=${encodedTitle}&summary=${encodeURIComponent(excerpt)}&source=psstee.dev`}
+        href={`https://www.linkedin.com/shareArticle/?mini=true&url=${encodedUrl}&title=${encodedTitle}&summary=${encodeURIComponent(excerpt)}&source=psstee.me`}
         target="_blank"
         rel="noopener noreferrer"
         className="px-2 py-1 border border-muted-foreground/30 rounded text-muted-foreground transition-all hover:text-[#89dceb] hover:border-[#89dceb]"

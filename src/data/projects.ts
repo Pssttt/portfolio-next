@@ -54,7 +54,7 @@ export const projects: Project[] = [
     status: "In Progress",
     timeline: "Jan 2026 – Present",
     repoUrl: "https://github.com/unishare-oss/unishare",
-    demoUrl: "https://share.psstee.dev",
+    demoUrl: "https://share.psstee.me",
     slug: "unishare",
   },
   {
@@ -150,7 +150,6 @@ export const projects: Project[] = [
     status: "Completed",
     timeline: "Jun 2025 – Jul 2025",
     repoUrl: "https://github.com/Pssttt/court-booking",
-    demoUrl: "https://booking.psstee.dev",
     slug: "court-booking",
   },
   {
@@ -213,7 +212,6 @@ export const projects: Project[] = [
     ],
     timeline: "April 2025 – May 2025",
     repoUrl: "https://github.com/Pssttt/stylofi",
-    demoUrl: "https://stylofi.psstee.dev/",
     slug: "stylofi",
   },
   {
@@ -243,7 +241,6 @@ export const projects: Project[] = [
     ],
     timeline: "May 2025 – June 2025",
     repoUrl: "https://github.com/Pssttt/huhoh",
-    demoUrl: "https://huhoh.psstee.dev/",
     slug: "huhoh",
   },
 ];
